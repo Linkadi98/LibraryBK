@@ -5,6 +5,8 @@
 (But you can use another one, just depend on your habit)
 <p> # You must use Netbeans 9.0 to connect to MySQL 8.0 if you use this one. But, like I said before, you can use another one if you don't like Netbeans </p> 
 
+<p> # In project, I also use Apache POI library so if you don't mind, please read document here: <a href="https://poi.apache.org"> Apache POI </a> </p>  
+
 My code is very long because I am working on my first Project so it seems like I still don't have enough experiences to format my code 
 to use easily
 
