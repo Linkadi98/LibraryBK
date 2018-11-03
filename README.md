@@ -1,10 +1,9 @@
 <h2> First Project at Ha Noi University of Science and Technology </h2> 
 
 <p> To use my code like an example, please follow exactly below: </p>
-<p> # You must have MySQL or MSSQl to run the script I put inside, in order to create database </p1>
-(But you can use another one, just depend on your habit =)) )
-<p> # You must use Netbeans 9.0 to connect to MySQl 8.0 if you use this one. But, like I said before, you can use another one if you don't like
-Netbeans </p> 
+<p> # You must have MySQL or MSSQL to run the script I put inside, in order to create database </p1>
+(But you can use another one, just depend on your habit)
+<p> # You must use Netbeans 9.0 to connect to MySQl 8.0 if you use this one. But, like I said before, you can use another one if you don't like Netbeans </p> 
 <p># My code is very long because I am working on my first Project so it seems like I still don't have enough experiences to format my code 
 to use easily </p>
 
