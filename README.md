@@ -7,7 +7,6 @@
 <p># My code is very long because I am working on my first Project so it seems like I still don't have enough experiences to format my code 
 to use easily </p>
 
-The last one, my code is very difficult to read if you don't have much time with Java Swing or simply with Java core, so my suggestion is
-you should learn step by step to get a good knowlegde about Java to follow my project
+The last one, if you don't have much time with Java Swing or simply with Java core, it's very difficult to read the code, so my suggestion is you should learn step by step to get a good knowlegde about Java to follow my project
 
 I am just newbie like every third-year student at college so I am very appreciate if you use my code and let me know what mistakes I've done
