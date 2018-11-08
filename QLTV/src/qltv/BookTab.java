@@ -108,6 +108,8 @@ public class BookTab extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý thư viện Sách ĐHBKHN");
 
+        jTabbedPane2.setMinimumSize(new java.awt.Dimension(2, 4));
+
         insertButton.setText("Insert");
         insertButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -279,12 +281,12 @@ public class BookTab extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -313,43 +315,64 @@ public class BookTab extends javax.swing.JFrame {
     }
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
         // TODO add your handling code here:
+        // đường dẫn
         String path = null;
         JFileChooser fileChooser = new JFileChooser();
+        // show ra một bảng chọn file
         int rVal = fileChooser.showOpenDialog(null);
+        // nếu nhấn nút ok (tuỳ chọn APPROVE_OPTION)
         if (rVal == JFileChooser.APPROVE_OPTION) {
             String fileName = fileChooser.getSelectedFile().getName();
             String dir = fileChooser.getCurrentDirectory().toString();
             path = dir + "\\" + fileName;
         }
+        // nếu nhấn nút cancel trong bảng 
+        else if (rVal == JFileChooser.CANCEL_OPTION) {
+            return;
+        }
+        // chỗ này sẽ delete hết các dòng trước khi nhập dữ liệu từ file 
         deleteAllRows();
-
+        // vector lưu tên cột
         Vector columns = new Vector();
         try {
             FileInputStream file = new FileInputStream(new File(path));
+            // tạo một file excel
             XSSFWorkbook workbook = new XSSFWorkbook(file);
+            // tạo một sheet trong excel có số thứ tự là 0
             XSSFSheet sheet = workbook.getSheetAt(0);
+            // con trỏ duyệt hàng trong excel 
             Iterator<Row> rowIt = sheet.iterator();
+            // nếu vẫn còn dòng trong file
             while (rowIt.hasNext()) {
+                // tạo một dòng mới 
                 Row row = rowIt.next();
+                // con trỏ trỏ vào các ô trong một dòng 
                 Iterator<Cell> cellIt = row.cellIterator();
+                // nếu là hàng 0 
                 if (row.getRowNum() == 0) {
+                    // add tên các cột vào trong bảng jtable 
                     while (cellIt.hasNext()) {
                         Cell cell = cellIt.next();
                         columns.add(cell.getStringCellValue());
                         ((DefaultTableModel) dataTable.getModel()).setColumnIdentifiers(columns);
                     }
                 } else {
+                    //vector chứa dữ liệu trong 1 dòng để add vào bảng jtabel
                     Vector<String> rowData = new Vector<String>();
+                    // nếu vẫn còn ô tiếp theo
                     while (cellIt.hasNext()) {
-
+                        // lấy cell trong bảng excel
                         Cell cell = cellIt.next();
+                        // nếu cell có kiểu dữ liệu là string
                         if (cell.getCellType() == CellType.STRING) {
                             rowData.add(cell.getStringCellValue());
-                        } else if (cell.getCellType() == CellType.NUMERIC) {
+                        }
+                        // nếu cell có kiểu dữ liệu là số
+                        else if (cell.getCellType() == CellType.NUMERIC) {
                             rowData.add(Double.toString(cell.getNumericCellValue()));
                         }
                     }
-
+                    // add dữ liệu vào trong bảng jtable 
                     ((DefaultTableModel) dataTable.getModel()).addRow(rowData);
                 }
             }
@@ -374,12 +397,15 @@ public class BookTab extends javax.swing.JFrame {
             String fileName = fileChooser.getSelectedFile().getName();
             path = dir + "\\" + fileName;
         }
+        else if (rival == JFileChooser.CANCEL_OPTION) 
+            return;
 
         try {
             File newFile = new File(path);
             XSSFWorkbook workbook = new XSSFWorkbook();
             XSSFSheet sheet = workbook.createSheet("Sheet 1");
             XSSFRow row = sheet.createRow((int) 0);
+            // set style cho một cell 
             XSSFCellStyle cellStyle = workbook.createCellStyle();
             cellStyle.setBorderTop(BorderStyle.THIN);
             cellStyle.setBorderBottom(BorderStyle.THIN);
@@ -406,6 +432,7 @@ public class BookTab extends javax.swing.JFrame {
             }
             fileOutputStream.close();
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi");
         }
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
@@ -702,7 +729,7 @@ public class BookTab extends javax.swing.JFrame {
     private javax.swing.JMenuItem contentMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JTable dataTable;
+    public javax.swing.JTable dataTable;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;

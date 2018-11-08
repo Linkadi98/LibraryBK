@@ -16,8 +16,7 @@ public class ConnectDB {
 		String url = "jdbc:mysql://localhost:3306/qltv?autoReconnect=true&useSSL=false";
 		String user = "root";
 		String passwd = "1234";
-		try {
-			
+		try{
 			connection = DriverManager.getConnection(url, user, passwd);
 		} catch (Exception e) {
 			// TODO: handle exception
