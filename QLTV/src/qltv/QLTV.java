@@ -5,13 +5,21 @@
  */
 package qltv;
 
+import java.awt.Font;
 import javax.swing.*;
+
 /**
  *
  * @author Pham Ngoc Minh
  */
 public class QLTV extends javax.swing.JFrame {
 
+    private int tab = 0;
+    public JPanel detail ;
+    public JPanel book ;
+    public JPanel customer ;
+    public JPanel employee ;
+    public JTable newTable;
     /**
      * Creates new form QLTV
      */
@@ -28,6 +36,7 @@ public class QLTV extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        //ImageIcon bookIcon = new ImageIcon(this.getClass().getResource("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\if_book_text_information_103411"));
         tabs = new javax.swing.JTabbedPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
@@ -41,34 +50,58 @@ public class QLTV extends javax.swing.JFrame {
         pasteMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
-        contentMenuItem = new javax.swing.JMenuItem();
+        contentsMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Phạm Ngọc Minh - 20162751");
+        setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
 
-        tabs.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        tabs.setPreferredSize(new java.awt.Dimension(948, 546));
+        detail = new Detail();
+        book = new Book();
+        customer = new Customer();
+        employee = new Employee();
+        Font f = new Font("Arial", Font.PLAIN, 14);
+        tabs.setFont(f);
+        tabs.setBackground(new java.awt.Color(0, 102, 0));
+        tabs.setForeground(new java.awt.Color(0, 0, 0));
+        tabs.setOpaque(true);
+        tabs.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                tabsStateChanged(evt);
+            }
+        });
 
-        JPanel bookPanel = new BookPanel();
-        JPanel customerPanel = new CustomerPanel();
-        JPanel employeePanel = new EmployeePanel();
-        JPanel loanPanel = new LoanPayPanel();
-        JPanel detailPanel = new DetailPanel();
-        tabs.add("Sách", bookPanel);
-        tabs.add("Người mượn", customerPanel);
-        tabs.add("Nhân viên", employeePanel);
-        tabs.add("Hoá đơn mượn trả", loanPanel);
-        tabs.add("Chi tiết hoá đơn mượn trả", detailPanel);
+        tabs.add("Thông tin sách", book);
+        tabs.add("Người mượn", customer);
+        tabs.add("Nhân viên", employee);
+        tabs.add("Mượn trả", detail);
+        //tabs.setIconAt(0, bookIcon);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
+        fileMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileMenuActionPerformed(evt);
+            }
+        });
 
         openMenuItem.setMnemonic('o');
         openMenuItem.setText("Open");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Save");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         saveAsMenuItem.setMnemonic('a');
@@ -111,9 +144,9 @@ public class QLTV extends javax.swing.JFrame {
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
 
-        contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Contents");
-        helpMenu.add(contentMenuItem);
+        contentsMenuItem.setMnemonic('c');
+        contentsMenuItem.setText("Contents");
+        helpMenu.add(contentsMenuItem);
 
         aboutMenuItem.setMnemonic('a');
         aboutMenuItem.setText("About");
@@ -127,16 +160,16 @@ public class QLTV extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 1116, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -145,6 +178,25 @@ public class QLTV extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void tabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabsStateChanged
+        // TODO add your handling code here:
+        tab = tabs.getSelectedIndex();
+        System.out.println(tab);
+    }//GEN-LAST:event_tabsStateChanged
+
+    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_fileMenuActionPerformed
+
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -162,15 +214,11 @@ public class QLTV extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QLTV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QLTV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QLTV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(QLTV.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -183,7 +231,7 @@ public class QLTV extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentMenuItem;
+    private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
@@ -192,7 +240,7 @@ public class QLTV extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
+    public javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;

@@ -1,9 +1,11 @@
+package qltv;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package qltv;
+
 
 import javax.swing.*;
 import java.awt.HeadlessException;
@@ -108,8 +110,6 @@ public class BookTab extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quản lý thư viện Sách ĐHBKHN");
 
-        jTabbedPane2.setMinimumSize(new java.awt.Dimension(2, 4));
-
         insertButton.setText("Insert");
         insertButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,9 +199,6 @@ public class BookTab extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Sách", bookPanel);
 
-        JPanel customerPanel = new CustomerPanel();
-        jTabbedPane2.add("Người mượn", customerPanel);
-
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
@@ -281,12 +278,12 @@ public class BookTab extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane2)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2)
         );
 
         pack();

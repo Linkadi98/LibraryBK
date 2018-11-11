@@ -18,9 +18,9 @@ public class ConnectDB {
 		String passwd = "1234";
 		try{
 			connection = DriverManager.getConnection(url, user, passwd);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		} catch (SQLException e) {
+                    // TODO: handle exception
+
 		}
 		return connection;
 	}

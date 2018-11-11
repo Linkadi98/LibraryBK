@@ -142,7 +142,6 @@
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTabbedPane()"/>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="JPanel customerPanel = new CustomerPanel();&#xa;jTabbedPane2.add(&quot;Ng&#x1b0;&#x1edd;i m&#x1b0;&#x1ee3;n&quot;, customerPanel);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
