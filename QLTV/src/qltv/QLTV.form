@@ -3,6 +3,11 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="66" red="66" type="rgb"/>
+        </Property>
+      </Properties>
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
@@ -110,6 +115,9 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Ph&#x1ea1;m Ng&#x1ecd;c Minh - 20162751"/>
+    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="ff" green="0" red="0" type="rgb"/>
+    </Property>
     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
       <Font name="Agency FB" size="14" style="1"/>
     </Property>
@@ -117,7 +125,7 @@
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="menuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -134,19 +142,18 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="tabs" pref="1116" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+              <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+              <Component id="tabs" pref="1205" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <Component id="tabs" pref="470" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
+          <Component id="jPanel1" max="32767" attributes="0"/>
+          <Component id="tabs" alignment="1" pref="591" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -154,23 +161,30 @@
     <Container class="javax.swing.JTabbedPane" name="tabs">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="66" red="0" type="rgb"/>
+          <Color blue="ff" green="66" red="66" type="rgb"/>
         </Property>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="abc" noResource="true"/>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
       <Events>
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="tabsStateChanged"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="//ImageIcon bookIcon = new ImageIcon(this.getClass().getResource(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\if_book_text_information_103411&quot;));"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="detail = new Detail();&#xa;book = new Book();&#xa;customer = new Customer();&#xa;employee = new Employee();&#xa;Font f = new Font(&quot;Arial&quot;, Font.PLAIN, 14);&#xa;tabs.setFont(f);"/>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tabs.add(&quot;Th&#xf4;ng tin s&#xe1;ch&quot;, book);&#xa;tabs.add(&quot;Ng&#x1b0;&#x1edd;i m&#x1b0;&#x1ee3;n&quot;, customer);&#xa;tabs.add(&quot;Nh&#xe2;n vi&#xea;n&quot;, employee);&#xa;tabs.add(&quot;M&#x1b0;&#x1ee3;n tr&#x1ea3;&quot;, detail);&#xa;//tabs.setIconAt(0, bookIcon);"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Icon bookIcon = new ImageIcon(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-open-book-16.png&quot;);&#xa;Icon customerIcon = new ImageIcon(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-reading-16.png&quot;);&#xa;Icon employeeIcon = new ImageIcon(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-name-tag-16.png&quot;);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="detail = new Detail();&#xa;book = new Book();&#xa;customer = new Customer();&#xa;employee = new Employee();&#xa;Font f = new Font(&quot;Arial&quot;, Font.PLAIN, 14);&#xa;&#xa;tabs.setFont(f);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tabs.add(&quot;Th&#xf4;ng tin s&#xe1;ch&quot;, book);&#xa;tabs.add(&quot;Ng&#x1b0;&#x1edd;i m&#x1b0;&#x1ee3;n&quot;, customer);&#xa;tabs.add(&quot;Nh&#xe2;n vi&#xea;n&quot;, employee);&#xa;tabs.add(&quot;M&#x1b0;&#x1ee3;n tr&#x1ea3;&quot;, detail);&#xa;tabs.setBackgroundAt(1, Color&#xa;&#xa;.MAGENTA);&#xa;tabs.setIconAt(0, bookIcon);&#xa;tabs.setIconAt(1, customerIcon);&#xa;tabs.setIconAt(2, employeeIcon);&#xa;//tabs.setIconAt(0, bookIcon);"/>
       </AuxValues>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="false"/>
+      </Layout>
     </Container>
   </SubComponents>
 </Form>

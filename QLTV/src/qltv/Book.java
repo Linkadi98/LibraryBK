@@ -40,6 +40,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -80,6 +82,9 @@ public class Book extends javax.swing.JPanel {
     private javax.swing.JTextField searchBar;
     private int choose = 0;
 
+    private Vector originalTableModel;
+    private DocumentListener documentListener;
+
     /**
      * Creates new form Book
      *
@@ -87,11 +92,6 @@ public class Book extends javax.swing.JPanel {
      */
     public Book() {
         initComponents();
-    }
-
-    public Book(DefaultTableModel tableModel) {
-        initComponents();
-        bookTable.setModel(tableModel);
     }
 
     /**
@@ -105,11 +105,15 @@ public class Book extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         bookTable = new javax.swing.JTable();
-        insertData = new javax.swing.JButton();
-        clearAll = new javax.swing.JButton();
-        showData = new javax.swing.JButton();
+        jToolBar1 = new javax.swing.JToolBar();
         chooseFile = new javax.swing.JButton();
         save = new javax.swing.JButton();
+        jToolBar2 = new javax.swing.JToolBar();
+        insertData = new javax.swing.JButton();
+        showData = new javax.swing.JButton();
+        clearAll = new javax.swing.JButton();
+        searchTF = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setForeground(new java.awt.Color(0, 153, 204));
         setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -125,6 +129,7 @@ public class Book extends javax.swing.JPanel {
         });
 
         bookTable.setAutoCreateRowSorter(true);
+        bookTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bookTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         bookTable.setForeground(new java.awt.Color(0, 0, 0));
         bookTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -188,54 +193,79 @@ public class Book extends javax.swing.JPanel {
                 bookTableKeyPressed(evt);
             }
         });
+        originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
+        addDocumentListener();
         jScrollPane1.setViewportView(bookTable);
 
-        insertData.setBackground(new java.awt.Color(0, 0, 255));
-        insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-database-20 (1).png"))); // NOI18N
-        insertData.setText("Thêm");
-        insertData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                insertDataActionPerformed(evt);
-            }
-        });
+        jToolBar1.setRollover(true);
 
-        clearAll.setBackground(new java.awt.Color(0, 0, 255));
-        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-delete-document-20.png"))); // NOI18N
-        clearAll.setText("Xoá");
-        clearAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearAllActionPerformed(evt);
-            }
-        });
-
-        showData.setBackground(new java.awt.Color(0, 0, 255));
-        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-database-export-20.png"))); // NOI18N
-        showData.setText("Hiển thị ");
-        showData.setToolTipText("");
-        showData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showDataActionPerformed(evt);
-            }
-        });
-
-        chooseFile.setBackground(new java.awt.Color(0, 0, 255));
         chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-file-20.png"))); // NOI18N
-        chooseFile.setText("Chọn file ...");
+        chooseFile.setToolTipText("Chọn file");
+        chooseFile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         chooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseFileActionPerformed(evt);
             }
         });
+        jToolBar1.add(chooseFile);
 
-        save.setBackground(new java.awt.Color(0, 0, 255));
         save.setForeground(new java.awt.Color(51, 51, 51));
         save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-microsoft-word-20.png"))); // NOI18N
-        save.setText("Xuất file");
+        save.setToolTipText("Xuất file");
+        save.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        save.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-microsoft-word-20.png"))); // NOI18N
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
             }
         });
+        jToolBar1.add(save);
+
+        jToolBar2.setRollover(true);
+
+        insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-database-20 (1).png"))); // NOI18N
+        insertData.setToolTipText("Thêm vào database");
+        insertData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                insertDataActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(insertData);
+
+        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-database-export-20.png"))); // NOI18N
+        showData.setToolTipText("Hiển thị database");
+        showData.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        showData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showDataActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(showData);
+
+        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-delete-document-20.png"))); // NOI18N
+        clearAll.setToolTipText("Xoá bảng");
+        clearAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearAllActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(clearAll);
+
+        searchTF.setToolTipText("Tìm kiếm trong bảng");
+        searchTF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchTFMouseClicked(evt);
+            }
+        });
+        searchTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTFActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Tìm kiếm");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -243,37 +273,28 @@ public class Book extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showData)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearAll, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(insertData, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(chooseFile)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addGap(239, 239, 239)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(insertData, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(save, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(clearAll)
-                        .addComponent(showData)))
-                .addContainerGap())
+                        .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1))
         );
     }// </editor-fold>//GEN-END:initComponents
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -295,12 +316,16 @@ public class Book extends javax.swing.JPanel {
                 new Object[][]{},
                 new String[]{"Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Thể loại", "Giá", "Số lượng"}
         ));
+        originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
+        addDocumentListener();
+//        searchTF.getDocument().addDocumentListener(null);
     }
 
     private boolean isInserted(int row) {
         inserted[row] = true;
         return inserted[row];
     }
+    
     private void showDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataActionPerformed
         // TODO add your handling code here:
         String[] defaultColumnNames = {"Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Thể loại", "Giá", "Số lượng"};
@@ -326,6 +351,11 @@ public class Book extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
         }
+        for (int i = 0; i < 40; i++) {
+            tableModel.addRow(new Object[] {null});
+        }
+        originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
+//        addDocumentListener();
     }//GEN-LAST:event_showDataActionPerformed
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
@@ -511,7 +541,7 @@ public class Book extends javax.swing.JPanel {
                                 XWPFParagraph paragraph = table.getRow(i).getCell(j).addParagraph();
                                 paragraph.createRun().setText(bookTable.getValueAt(i - 1, j).toString());
                             }
-                            
+
                         }
                         addRowData(table, table.getRows().size());
                     }
@@ -520,11 +550,11 @@ public class Book extends javax.swing.JPanel {
             OutputStream out = new FileOutputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
             xdoc.write(out);
             out.close();
-            
+
         } catch (IOException | InvalidFormatException ex) {
         }
         int dialogResult = JOptionPane.showConfirmDialog(null, "File đã tạo thành công!\nBạn có muốn mở file?");
-        if(dialogResult == JOptionPane.YES_OPTION){  
+        if (dialogResult == JOptionPane.YES_OPTION) {
             if (Desktop.isDesktopSupported()) {
                 try {
                     File myFile = new File("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
@@ -533,22 +563,35 @@ public class Book extends javax.swing.JPanel {
                     // no application registered for PDFs
                 }
             }
-        }
-        else {
+        } else {
         }
     }//GEN-LAST:event_saveActionPerformed
+
+    private void searchTFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchTFMouseClicked
+        // TODO add your handling code here:
+        searchTF.setText("");
+        searchTF.getDocument().addDocumentListener(documentListener);
+    }//GEN-LAST:event_searchTFMouseClicked
+
+    private void searchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTFActionPerformed
+        // TODO add your handling code here:
+        
+        searchTableContents(searchTF.getText());
+        
+    }//GEN-LAST:event_searchTFActionPerformed
     private void setDefaultTable(XWPFTable table) {
         for (int i = 1; i < table.getRows().size(); i++) {
             table.removeRow(1);
         }
     }
+
     private void addRowData(XWPFTable table, int lastRowPosition) {
         for (int i = lastRowPosition - 1; i < bookTable.getRowCount(); i++) {
             XWPFTableRow newRow = table.createRow();
             for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
                 newRow.getCell(j).setText(bookTable.getValueAt(i, j).toString());
             }
-            
+
         }
     }
 
@@ -569,6 +612,20 @@ public class Book extends javax.swing.JPanel {
         JMenuItem insertAbove = new JMenuItem("Insert Above");
         JMenuItem insertBelow = new JMenuItem("Insert Below");
         JMenuItem update = new JMenuItem("Update");
+        Icon icon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-cancel-16.png");
+        Icon deleteDb = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-delete-database-20.png");
+        Icon deleteTb = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-delete-table-25.png");
+        Icon updateIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-downloading-updates-20.png");
+        Icon insertIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-add-row-25.png");
+        Icon insertBelowIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-down-arrow-25.png");
+        Icon insertAboveIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-long-arrow-up-25.png");
+        insertMenu.setIcon(insertIcon);
+        insertAbove.setIcon(insertAboveIcon);
+        insertBelow.setIcon(insertBelowIcon);
+        deleteMenu.setIcon(icon);
+        deleteFromDb.setIcon(deleteDb);
+        deleteFromTb.setIcon(deleteTb);
+        update.setIcon(updateIcon);
         deleteFromDb.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -697,13 +754,59 @@ public class Book extends javax.swing.JPanel {
         return false;
     }
 
+    private void addDocumentListener() {
+        documentListener = new DocumentListener() {
+            public void changedUpdate(DocumentEvent documentEvent) {
+                search();
+            }
+
+            public void insertUpdate(DocumentEvent documentEvent) {
+                search();
+            }
+
+            public void removeUpdate(DocumentEvent documentEvent) {
+                search();
+            }
+
+            private void search() {
+                searchTableContents(searchTF.getText());
+            }
+        };
+
+    }
+
+    public void searchTableContents(String searchString) {
+        DefaultTableModel currtableModel = (DefaultTableModel) bookTable.getModel();
+        //To empty the table before search
+        currtableModel.setRowCount(0);
+        //To search for contents from original table content
+        for (Object rows : originalTableModel) {
+            
+            Vector rowVector = (Vector) rows;
+            for (Object column : rowVector) {
+                if (column == null) {
+                    continue;
+                }
+                if (column.toString().contains(searchString)) {
+                    //content found so adding to table
+                    currtableModel.addRow(rowVector);
+                    break;
+                }
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable bookTable;
     private javax.swing.JButton chooseFile;
     private javax.swing.JButton clearAll;
     private javax.swing.JButton insertData;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton save;
+    private javax.swing.JTextField searchTF;
     private javax.swing.JButton showData;
     // End of variables declaration//GEN-END:variables
     class SharedListSelectionHandler implements ListSelectionListener {

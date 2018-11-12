@@ -1,10 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this lice    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getIconWidth() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getIconHeight() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+nse header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package qltv;
 
+import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
 
@@ -36,8 +51,11 @@ public class QLTV extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        //ImageIcon bookIcon = new ImageIcon(this.getClass().getResource("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\if_book_text_information_103411"));
+        Icon bookIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-open-book-16.png");
+        Icon customerIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-reading-16.png");
+        Icon employeeIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-name-tag-16.png");
         tabs = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -55,6 +73,7 @@ public class QLTV extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phạm Ngọc Minh - 20162751");
+        setBackground(new java.awt.Color(0, 0, 255));
         setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
 
         detail = new Detail();
@@ -62,9 +81,11 @@ public class QLTV extends javax.swing.JFrame {
         customer = new Customer();
         employee = new Employee();
         Font f = new Font("Arial", Font.PLAIN, 14);
+
         tabs.setFont(f);
-        tabs.setBackground(new java.awt.Color(0, 102, 0));
+        tabs.setBackground(new java.awt.Color(102, 102, 255));
         tabs.setForeground(new java.awt.Color(0, 0, 0));
+        tabs.setName("abc"); // NOI18N
         tabs.setOpaque(true);
         tabs.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -76,7 +97,17 @@ public class QLTV extends javax.swing.JFrame {
         tabs.add("Người mượn", customer);
         tabs.add("Nhân viên", employee);
         tabs.add("Mượn trả", detail);
+        tabs.setBackgroundAt(1, Color
+
+            .MAGENTA);
+        tabs.setIconAt(0, bookIcon);
+        tabs.setIconAt(1, customerIcon);
+        tabs.setIconAt(2, employeeIcon);
         //tabs.setIconAt(0, bookIcon);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        menuBar.setBackground(new java.awt.Color(102, 102, 255));
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -160,19 +191,20 @@ public class QLTV extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 1116, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 1205, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -239,6 +271,7 @@ public class QLTV extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenuBar menuBar;
     public javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;

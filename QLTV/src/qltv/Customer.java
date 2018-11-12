@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -38,6 +40,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -70,6 +74,9 @@ public class Customer extends javax.swing.JPanel {
     private javax.swing.JButton okButton;
     private javax.swing.JTextField searchBar;
     private int choose = 0;
+    
+    private Vector originalTableModel;
+    private DocumentListener documentListener;
     /**
      * Creates new form Customer
      */
@@ -88,11 +95,15 @@ public class Customer extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         customerTable = new javax.swing.JTable();
+        jToolBar2 = new javax.swing.JToolBar();
+        chooseFile = new javax.swing.JButton();
         save = new javax.swing.JButton();
+        jToolBar3 = new javax.swing.JToolBar();
+        insertData = new javax.swing.JButton();
         showData = new javax.swing.JButton();
         clearAll = new javax.swing.JButton();
-        insertData = new javax.swing.JButton();
-        chooseFile = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        searchTF = new javax.swing.JTextField();
 
         customerTable.setAutoCreateRowSorter(true);
         customerTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
@@ -151,50 +162,71 @@ public class Customer extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(customerTable);
 
-        save.setBackground(new java.awt.Color(0, 0, 255));
+        jToolBar2.setRollover(true);
+
+        chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-file-20.png"))); // NOI18N
+        chooseFile.setToolTipText("Chọn file");
+        chooseFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseFileActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(chooseFile);
+
         save.setForeground(new java.awt.Color(51, 51, 51));
         save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-microsoft-word-20.png"))); // NOI18N
-        save.setText("Xuất file");
+        save.setToolTipText("Xuất file");
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
             }
         });
+        jToolBar2.add(save);
 
-        showData.setBackground(new java.awt.Color(0, 0, 255));
-        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-database-export-20.png"))); // NOI18N
-        showData.setText("Hiển thị ");
-        showData.setToolTipText("");
-        showData.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showDataActionPerformed(evt);
-            }
-        });
+        jToolBar3.setRollover(true);
 
-        clearAll.setBackground(new java.awt.Color(0, 0, 255));
-        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-delete-document-20.png"))); // NOI18N
-        clearAll.setText("Xoá");
-        clearAll.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearAllActionPerformed(evt);
-            }
-        });
-
-        insertData.setBackground(new java.awt.Color(0, 0, 255));
         insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-database-20 (1).png"))); // NOI18N
-        insertData.setText("Thêm");
+        insertData.setToolTipText("Thêm vào database");
         insertData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertDataActionPerformed(evt);
             }
         });
+        jToolBar3.add(insertData);
 
-        chooseFile.setBackground(new java.awt.Color(0, 0, 255));
-        chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-file-20.png"))); // NOI18N
-        chooseFile.setText("Chọn file ...");
-        chooseFile.addActionListener(new java.awt.event.ActionListener() {
+        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-database-export-20.png"))); // NOI18N
+        showData.setToolTipText("Hiển thị database");
+        showData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chooseFileActionPerformed(evt);
+                showDataActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(showData);
+
+        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-delete-document-20.png"))); // NOI18N
+        clearAll.setToolTipText("Xoá bảng");
+        clearAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearAllActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(clearAll);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Tìm kiếm");
+
+        originalTableModel = (Vector) ((DefaultTableModel) customerTable.getModel()).getDataVector().clone();
+        addDocumentListener();
+        searchTF.setToolTipText("Tìm kiếm trong bảng");
+        searchTF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchTFMouseClicked(evt);
+            }
+        });
+        searchTF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTFActionPerformed(evt);
             }
         });
 
@@ -202,38 +234,30 @@ public class Customer extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(save, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showData)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(clearAll, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(insertData, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(chooseFile)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                .addGap(245, 245, 245)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(chooseFile, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clearAll)
-                    .addComponent(insertData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(save, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(showData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -314,7 +338,6 @@ public class Customer extends javax.swing.JPanel {
                                 XWPFParagraph paragraph = table.getRow(i).getCell(j).addParagraph();
                                 paragraph.createRun().setText(customerTable.getValueAt(i - 1, j).toString());
                             }
-
                         }
                         addRowData(table, table.getRows().size());
                     }
@@ -387,6 +410,7 @@ public class Customer extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
         }
+        originalTableModel = (Vector) ((DefaultTableModel) customerTable.getModel()).getDataVector().clone();
     }//GEN-LAST:event_showDataActionPerformed
 
     private void clearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllActionPerformed
@@ -501,6 +525,17 @@ public class Customer extends javax.swing.JPanel {
             Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_chooseFileActionPerformed
+
+    private void searchTFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchTFMouseClicked
+        // TODO add your handling code here:
+        searchTF.setText("");
+        searchTF.getDocument().addDocumentListener(documentListener);
+    }//GEN-LAST:event_searchTFMouseClicked
+
+    private void searchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTFActionPerformed
+        // TODO add your handling code here:
+        searchTableContents(searchTF.getText());
+    }//GEN-LAST:event_searchTFActionPerformed
     
     private JPopupMenu popUp() {
         JPopupMenu popupMenu = new JPopupMenu();
@@ -512,6 +547,20 @@ public class Customer extends javax.swing.JPanel {
         JMenuItem insertAbove = new JMenuItem("Insert Above");
         JMenuItem insertBelow = new JMenuItem("Insert Below");
         JMenuItem update = new JMenuItem("Update");
+        Icon icon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-cancel-16.png");
+        Icon deleteDb = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-delete-database-20.png");
+        Icon deleteTb = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-delete-table-25.png");
+        Icon updateIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-downloading-updates-20.png");
+        Icon insertIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-add-row-25.png");
+        Icon insertBelowIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-down-arrow-25.png");
+        Icon insertAboveIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-long-arrow-up-25.png");
+        insertMenu.setIcon(insertIcon);
+        insertAbove.setIcon(insertAboveIcon);
+        insertBelow.setIcon(insertBelowIcon);
+        deleteMenu.setIcon(icon);
+        deleteFromDb.setIcon(deleteDb);
+        deleteFromTb.setIcon(deleteTb);
+        update.setIcon(updateIcon);
         deleteFromDb.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -636,13 +685,58 @@ public class Customer extends javax.swing.JPanel {
         }
         return false;
     }
+    private void addDocumentListener() {
+        documentListener = new DocumentListener() {
+            public void changedUpdate(DocumentEvent documentEvent) {
+                search();
+            }
+
+            public void insertUpdate(DocumentEvent documentEvent) {
+                search();
+            }
+
+            public void removeUpdate(DocumentEvent documentEvent) {
+                search();
+            }
+
+            private void search() {
+                searchTableContents(searchTF.getText());
+            }
+        };
+
+    }
+
+    public void searchTableContents(String searchString) {
+        DefaultTableModel currtableModel = (DefaultTableModel) customerTable.getModel();
+        //To empty the table before search
+        currtableModel.setRowCount(0);
+        //To search for contents from original table content
+        for (Object rows : originalTableModel) {
+            
+            Vector rowVector = (Vector) rows;
+            for (Object column : rowVector) {
+                if (column == null) {
+                    continue;
+                }
+                if (column.toString().contains(searchString)) {
+                    //content found so adding to table
+                    currtableModel.addRow(rowVector);
+                    break;
+                }
+            }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chooseFile;
     private javax.swing.JButton clearAll;
     private javax.swing.JTable customerTable;
     private javax.swing.JButton insertData;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
     private javax.swing.JButton save;
+    private javax.swing.JTextField searchTF;
     private javax.swing.JButton showData;
     // End of variables declaration//GEN-END:variables
     class SharedListSelectionHandler implements ListSelectionListener {
