@@ -14,7 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -46,17 +45,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
@@ -112,11 +105,14 @@ public class Book extends javax.swing.JPanel {
         insertData = new javax.swing.JButton();
         showData = new javax.swing.JButton();
         clearAll = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
         searchTF = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
+        setBackground(new java.awt.Color(102, 0, 204));
         setForeground(new java.awt.Color(0, 153, 204));
         setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        setOpaque(false);
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -198,10 +194,12 @@ public class Book extends javax.swing.JPanel {
         jScrollPane1.setViewportView(bookTable);
 
         jToolBar1.setRollover(true);
+        jToolBar1.setOpaque(false);
 
-        chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-file-20.png"))); // NOI18N
+        chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Excel_25px_3.png"))); // NOI18N
         chooseFile.setToolTipText("Chọn file");
         chooseFile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        chooseFile.setOpaque(false);
         chooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseFileActionPerformed(evt);
@@ -210,10 +208,10 @@ public class Book extends javax.swing.JPanel {
         jToolBar1.add(chooseFile);
 
         save.setForeground(new java.awt.Color(51, 51, 51));
-        save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-microsoft-word-20.png"))); // NOI18N
+        save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Word_25px.png"))); // NOI18N
         save.setToolTipText("Xuất file");
         save.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        save.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-microsoft-word-20.png"))); // NOI18N
+        save.setOpaque(false);
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
@@ -222,9 +220,11 @@ public class Book extends javax.swing.JPanel {
         jToolBar1.add(save);
 
         jToolBar2.setRollover(true);
+        jToolBar2.setOpaque(false);
 
-        insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-database-20 (1).png"))); // NOI18N
+        insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Add_Database_25px.png"))); // NOI18N
         insertData.setToolTipText("Thêm vào database");
+        insertData.setOpaque(false);
         insertData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertDataActionPerformed(evt);
@@ -232,9 +232,10 @@ public class Book extends javax.swing.JPanel {
         });
         jToolBar2.add(insertData);
 
-        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-database-export-20.png"))); // NOI18N
+        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Database_View_25px.png"))); // NOI18N
         showData.setToolTipText("Hiển thị database");
         showData.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        showData.setOpaque(false);
         showData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showDataActionPerformed(evt);
@@ -242,8 +243,9 @@ public class Book extends javax.swing.JPanel {
         });
         jToolBar2.add(showData);
 
-        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-delete-document-20.png"))); // NOI18N
+        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Delete_Document_25px.png"))); // NOI18N
         clearAll.setToolTipText("Xoá bảng");
+        clearAll.setOpaque(false);
         clearAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearAllActionPerformed(evt);
@@ -251,7 +253,16 @@ public class Book extends javax.swing.JPanel {
         });
         jToolBar2.add(clearAll);
 
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Search_25px.png"))); // NOI18N
+
+        originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
+        addDocumentListener();
+        searchTF.setBackground(new java.awt.Color(255, 255, 255));
+        searchTF.setForeground(new java.awt.Color(0, 0, 0));
         searchTF.setToolTipText("Tìm kiếm trong bảng");
+        searchTF.setBorder(null);
         searchTF.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 searchTFMouseClicked(evt);
@@ -263,10 +274,6 @@ public class Book extends javax.swing.JPanel {
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Tìm kiếm");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -275,26 +282,34 @@ public class Book extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                .addGap(239, 239, 239)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -325,7 +340,7 @@ public class Book extends javax.swing.JPanel {
         inserted[row] = true;
         return inserted[row];
     }
-    
+
     private void showDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataActionPerformed
         // TODO add your handling code here:
         String[] defaultColumnNames = {"Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Thể loại", "Giá", "Số lượng"};
@@ -351,9 +366,9 @@ public class Book extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (int i = 0; i < 40; i++) {
-            tableModel.addRow(new Object[] {null});
-        }
+//        for (int i = 0; i < 40; i++) {
+//            tableModel.addRow(new Object[]{null});
+//        }
         originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
 //        addDocumentListener();
     }//GEN-LAST:event_showDataActionPerformed
@@ -575,9 +590,7 @@ public class Book extends javax.swing.JPanel {
 
     private void searchTFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTFActionPerformed
         // TODO add your handling code here:
-        
         searchTableContents(searchTF.getText());
-        
     }//GEN-LAST:event_searchTFActionPerformed
     private void setDefaultTable(XWPFTable table) {
         for (int i = 1; i < table.getRows().size(); i++) {
@@ -781,9 +794,9 @@ public class Book extends javax.swing.JPanel {
         currtableModel.setRowCount(0);
         //To search for contents from original table content
         for (Object rows : originalTableModel) {
-            
             Vector rowVector = (Vector) rows;
             for (Object column : rowVector) {
+                // Check if column is nothing
                 if (column == null) {
                     continue;
                 }
@@ -801,8 +814,9 @@ public class Book extends javax.swing.JPanel {
     private javax.swing.JButton chooseFile;
     private javax.swing.JButton clearAll;
     private javax.swing.JButton insertData;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JButton save;
@@ -817,8 +831,8 @@ public class Book extends javax.swing.JPanel {
     }
 
     private void Searching() {
-
         JFrame searchingBox = new JFrame("Tìm kiếm");
+        searchingBox.setLocation(450, 400);
         searchingBox.setSize(600, 200);
         jComboBox1 = new javax.swing.JComboBox<>();
         searchBar = new javax.swing.JTextField();

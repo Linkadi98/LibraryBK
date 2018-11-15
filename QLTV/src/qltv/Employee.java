@@ -65,6 +65,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
  * @author Pham Ngoc Minh
  */
 public class Employee extends javax.swing.JPanel {
+
     public boolean[] inserted = new boolean[100000];
     private String[] columnNames = {"Mã nhân viên", "Họ và tên", "Ngày sinh", "Địa chỉ", "Giới tính", "Email", "Số điện thoại"};
     private String[][] rows = {{"", "", "", "", "", "", ""}, {"", "", "", "", "", "", ""}, {"", "", "", "", "", "", ""}, {"", "", "", "", "", "", ""}};
@@ -74,9 +75,10 @@ public class Employee extends javax.swing.JPanel {
     private javax.swing.JButton okButton;
     private javax.swing.JTextField searchBar;
     private int choose = 0;
-    
+
     private Vector originalTableModel;
     private DocumentListener documentListener;
+
     /**
      * Creates new form Employee
      */
@@ -95,17 +97,19 @@ public class Employee extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         employeeTable = new javax.swing.JTable();
-        jToolBar2 = new javax.swing.JToolBar();
+        jToolBar1 = new javax.swing.JToolBar();
         chooseFile = new javax.swing.JButton();
         save = new javax.swing.JButton();
-        jToolBar3 = new javax.swing.JToolBar();
+        jToolBar2 = new javax.swing.JToolBar();
         insertData = new javax.swing.JButton();
         showData = new javax.swing.JButton();
         clearAll = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         searchTF = new javax.swing.JTextField();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setForeground(new java.awt.Color(0, 51, 255));
+        setOpaque(false);
 
         employeeTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         employeeTable.setForeground(new java.awt.Color(0, 0, 0));
@@ -163,63 +167,68 @@ public class Employee extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(employeeTable);
 
-        jToolBar2.setRollover(true);
+        jToolBar1.setRollover(true);
+        jToolBar1.setOpaque(false);
 
-        chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-file-20.png"))); // NOI18N
+        chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Excel_25px_3.png"))); // NOI18N
         chooseFile.setToolTipText("Chọn file");
         chooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseFileActionPerformed(evt);
             }
         });
-        jToolBar2.add(chooseFile);
+        jToolBar1.add(chooseFile);
 
         save.setForeground(new java.awt.Color(51, 51, 51));
-        save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-microsoft-word-20.png"))); // NOI18N
+        save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Word_25px.png"))); // NOI18N
         save.setToolTipText("Xuất file");
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
             }
         });
-        jToolBar2.add(save);
+        jToolBar1.add(save);
 
-        jToolBar3.setRollover(true);
+        jToolBar2.setRollover(true);
+        jToolBar2.setOpaque(false);
 
-        insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-add-database-20 (1).png"))); // NOI18N
+        insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Add_Database_25px.png"))); // NOI18N
         insertData.setToolTipText("Thêm vào database");
         insertData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertDataActionPerformed(evt);
             }
         });
-        jToolBar3.add(insertData);
+        jToolBar2.add(insertData);
 
-        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-database-export-20.png"))); // NOI18N
+        showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Database_View_25px.png"))); // NOI18N
         showData.setToolTipText("Hiển thị database");
         showData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showDataActionPerformed(evt);
             }
         });
-        jToolBar3.add(showData);
+        jToolBar2.add(showData);
 
-        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8-delete-document-20.png"))); // NOI18N
+        clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Delete_Document_25px.png"))); // NOI18N
         clearAll.setToolTipText("Xoá bảng");
         clearAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearAllActionPerformed(evt);
             }
         });
-        jToolBar3.add(clearAll);
+        jToolBar2.add(clearAll);
 
-        jLabel2.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Tìm kiếm");
+        jLabel3.setFont(new java.awt.Font("Dialog", 1, 13)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Search_25px.png"))); // NOI18N
 
         originalTableModel = (Vector) ((DefaultTableModel) employeeTable.getModel()).getDataVector().clone();
         addDocumentListener();
+        searchTF.setBackground(new java.awt.Color(255, 255, 255));
+        searchTF.setForeground(new java.awt.Color(0, 0, 0));
         searchTF.setToolTipText("Tìm kiếm trong bảng");
+        searchTF.setBorder(null);
         searchTF.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 searchTFMouseClicked(evt);
@@ -235,30 +244,38 @@ public class Employee extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                .addGap(245, 245, 245)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -334,7 +351,7 @@ public class Employee extends javax.swing.JPanel {
         } catch (IOException | InvalidFormatException ex) {
         }
         int dialogResult = JOptionPane.showConfirmDialog(null, "File đã tạo thành công!\nBạn có muốn mở file?");
-        if(dialogResult == JOptionPane.YES_OPTION){
+        if (dialogResult == JOptionPane.YES_OPTION) {
             if (Desktop.isDesktopSupported()) {
                 try {
                     File myFile = new File("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
@@ -343,25 +360,26 @@ public class Employee extends javax.swing.JPanel {
                     // no application registered for PDFs
                 }
             }
-        }
-        else {
+        } else {
         }
     }//GEN-LAST:event_saveActionPerformed
-    
+
     private void setDefaultTable(XWPFTable table) {
         for (int i = 1; i < table.getRows().size(); i++) {
             table.removeRow(1);
         }
     }
+
     private void addRowData(XWPFTable table, int lastRowPosition) {
         for (int i = lastRowPosition - 1; i < employeeTable.getRowCount(); i++) {
             XWPFTableRow newRow = table.createRow();
             for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
                 newRow.getCell(j).setText(employeeTable.getValueAt(i, j).toString());
             }
-            
+
         }
     }
+
     private static void removeParagraphs(XWPFTableCell tableCell) {
         int count = tableCell.getParagraphs().size();
         for (int i = 0; i < count; i++) {
@@ -413,18 +431,18 @@ public class Employee extends javax.swing.JPanel {
         int rows = employeeTable.getRowCount();
         for (int row = 0; row < rows; row++) {
             if (!inserted[row] && !isEmptyRow(row)) {
-                String sql = "INSERT INTO qltv.employee (idEmpoyee, Name, BOD, Address, Sex, Email, Phone_number) VALUES (?,?,?,?,?,?,?)";
+                String sql = "INSERT INTO qltv.employee (idEmployee, Name, BOD, Address, Sex, Email, Phone_number) VALUES (?,?,?,?,?,?,?)";
                 try {
                     connection.setAutoCommit(false);
                     PreparedStatement pst = connection.prepareStatement(sql);
-                    String idEmpoyee = (String) employeeTable.getValueAt(row, 0);
+                    String idEmployee = (String) employeeTable.getValueAt(row, 0);
                     String Name = (String) employeeTable.getValueAt(row, 1);
                     String BOD = (String) employeeTable.getValueAt(row, 2);
                     String Address = (String) employeeTable.getValueAt(row, 3);
                     String Sex = (String) employeeTable.getValueAt(row, 4);
                     String Email = (String) employeeTable.getValueAt(row, 5);
                     String Phone_number = (String) employeeTable.getValueAt(row, 6);
-                    pst.setString(1, idEmpoyee);
+                    pst.setString(1, idEmployee);
                     pst.setString(2, Name);
                     pst.setString(3, BOD);
                     pst.setString(4, Address);
@@ -521,37 +539,38 @@ public class Employee extends javax.swing.JPanel {
         // TODO add your handling code here:
         searchTableContents(searchTF.getText());
     }//GEN-LAST:event_searchTFActionPerformed
-    
+
     public void employeeTable(JTable employeeTable) {
         employeeTable = employeeTable;
     }
+
     private void setDefaultInsertedRows() {
         for (int i = 0; i < inserted.length; i++) {
             inserted[i] = false;
         }
     }
-    
+
     public void deleteAllRows() {
         employeeTable.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{"Mã nhân viên", "Họ và tên", "Ngày sinh", "Địa chỉ", "Giới tính", "Email", "Số điện thoại"}
         ));
     }
-    
+
     private boolean isInserted(int row) {
         inserted[row] = true;
         return inserted[row];
     }
-         
 
-    private void formMouseClicked(java.awt.event.MouseEvent evt) {                                  
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {
         // TODO add your handling code here:
-        
-    }                                 
 
-    private void formComponentHidden(java.awt.event.ComponentEvent evt) {                                     
+    }
+
+    private void formComponentHidden(java.awt.event.ComponentEvent evt) {
         // TODO add your handling code here:
-    }                                    
+    }
+
     private JPopupMenu popUp() {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenu deleteMenu = new JMenu("Delete");
@@ -636,11 +655,11 @@ public class Employee extends javax.swing.JPanel {
                     int row = rows[i];
 
                     String temp = (String) tableModel.getValueAt(row, 0);
-                    String sql = "UPDATE qltv.employee SET idEmpoyee = ?, Name = ?, BOD = ?, Address = ?, Sex = ?, Email = ?, Phone_number = ? WHERE (idEmployee = ?)";
+                    String sql = "UPDATE qltv.employee SET idEmployee = ?, Name = ?, BOD = ?, Address = ?, Sex = ?, Email = ?, Phone_number = ? WHERE (idEmployee = ?)";
                     try {
                         connection.setAutoCommit(false);
                         PreparedStatement pst = connection.prepareStatement(sql);
-                        String idEmpoyee = (String) employeeTable.getValueAt(row, 0);
+                        String idEmployee = (String) employeeTable.getValueAt(row, 0);
                         String Name = (String) employeeTable.getValueAt(row, 1);
                         String BOD = (String) employeeTable.getValueAt(row, 2);
                         String Address = (String) employeeTable.getValueAt(row, 3);
@@ -648,7 +667,7 @@ public class Employee extends javax.swing.JPanel {
                         String Email = (String) employeeTable.getValueAt(row, 5);
                         String Phone_number = (String) employeeTable.getValueAt(row, 6);
                         pst.setString(8, temp);
-                        pst.setString(1, idEmpoyee);
+                        pst.setString(1, idEmployee);
                         pst.setString(2, Name);
                         pst.setString(3, BOD);
                         pst.setString(4, Address);
@@ -692,7 +711,7 @@ public class Employee extends javax.swing.JPanel {
         return popupMenu;
 
     }
-    
+
     private boolean isEmptyRow(int row) {
         DefaultTableModel tableModel = (DefaultTableModel) employeeTable.getModel();
         for (int i = 0; i < employeeTable.getColumnCount(); i++) {
@@ -703,6 +722,7 @@ public class Employee extends javax.swing.JPanel {
         }
         return false;
     }
+
     private void addDocumentListener() {
         documentListener = new DocumentListener() {
             public void changedUpdate(DocumentEvent documentEvent) {
@@ -730,7 +750,7 @@ public class Employee extends javax.swing.JPanel {
         currtableModel.setRowCount(0);
         //To search for contents from original table content
         for (Object rows : originalTableModel) {
-            
+
             Vector rowVector = (Vector) rows;
             for (Object column : rowVector) {
                 if (column == null) {
@@ -750,10 +770,11 @@ public class Employee extends javax.swing.JPanel {
     private javax.swing.JButton clearAll;
     private javax.swing.JTable employeeTable;
     private javax.swing.JButton insertData;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
-    private javax.swing.JToolBar jToolBar3;
     private javax.swing.JButton save;
     private javax.swing.JTextField searchTF;
     private javax.swing.JButton showData;
@@ -769,6 +790,7 @@ public class Employee extends javax.swing.JPanel {
 
         JFrame searchingBox = new JFrame("Tìm kiếm");
         searchingBox.setSize(600, 200);
+        searchingBox.setLocation(450, 400);
         jComboBox1 = new javax.swing.JComboBox<>();
         searchBar = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();

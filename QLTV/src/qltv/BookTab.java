@@ -367,6 +367,7 @@ public class BookTab extends javax.swing.JFrame {
                         // nếu cell có kiểu dữ liệu là số
                         else if (cell.getCellType() == CellType.NUMERIC) {
                             rowData.add(Double.toString(cell.getNumericCellValue()));
+                            
                         }
                     }
                     // add dữ liệu vào trong bảng jtable 

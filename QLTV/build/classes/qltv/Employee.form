@@ -5,6 +5,7 @@
     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="33" red="0" type="rgb"/>
     </Property>
+    <Property name="opaque" type="boolean" value="false"/>
   </Properties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -21,34 +22,45 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
+          <Component id="jScrollPane1" alignment="0" pref="817" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jToolBar2" min="-2" pref="82" max="-2" attributes="0"/>
+              <Component id="jToolBar1" min="-2" pref="82" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jToolBar2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jLabel3" min="-2" pref="51" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jToolBar3" pref="239" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="245" max="-2" attributes="0"/>
-              <Component id="jLabel2" min="-2" pref="67" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="searchTF" min="-2" pref="154" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="searchTF" alignment="0" min="-2" pref="160" max="-2" attributes="0"/>
+                  <Component id="jSeparator1" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
-          <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jToolBar2" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jToolBar3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="searchTF" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel2" alignment="3" min="-2" pref="24" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jToolBar1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="jToolBar2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jLabel3" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="searchTF" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="372" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="365" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -100,9 +112,10 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JToolBar" name="jToolBar2">
+    <Container class="javax.swing.JToolBar" name="jToolBar1">
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
@@ -110,7 +123,7 @@
         <Component class="javax.swing.JButton" name="chooseFile">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/qltv/icons8-add-file-20.png"/>
+              <Image iconType="3" name="/qltv/icons8_Microsoft_Excel_25px_3.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Ch&#x1ecd;n file"/>
           </Properties>
@@ -124,7 +137,7 @@
               <Color blue="33" green="33" red="33" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/qltv/icons8-microsoft-word-20.png"/>
+              <Image iconType="3" name="/qltv/icons8_Microsoft_Word_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Xu&#x1ea5;t file"/>
           </Properties>
@@ -134,9 +147,10 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JToolBar" name="jToolBar3">
+    <Container class="javax.swing.JToolBar" name="jToolBar2">
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
+        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
@@ -144,7 +158,7 @@
         <Component class="javax.swing.JButton" name="insertData">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/qltv/icons8-add-database-20 (1).png"/>
+              <Image iconType="3" name="/qltv/icons8_Add_Database_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Th&#xea;m v&#xe0;o database"/>
           </Properties>
@@ -155,7 +169,7 @@
         <Component class="javax.swing.JButton" name="showData">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/qltv/icons8-database-export-20.png"/>
+              <Image iconType="3" name="/qltv/icons8_Database_View_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Hi&#x1ec3;n th&#x1ecb; database"/>
           </Properties>
@@ -166,7 +180,7 @@
         <Component class="javax.swing.JButton" name="clearAll">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/qltv/icons8-delete-document-20.png"/>
+              <Image iconType="3" name="/qltv/icons8_Delete_Document_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Xo&#xe1; b&#x1ea3;ng"/>
           </Properties>
@@ -176,18 +190,29 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Dialog" size="13" style="1"/>
         </Property>
         <Property name="horizontalAlignment" type="int" value="0"/>
-        <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/qltv/icons8_Search_25px.png"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="searchTF">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="0" type="rgb"/>
+        </Property>
         <Property name="toolTipText" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m trong b&#x1ea3;ng"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="searchTFMouseClicked"/>
@@ -196,6 +221,8 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="originalTableModel = (Vector) ((DefaultTableModel) employeeTable.getModel()).getDataVector().clone();&#xa;addDocumentListener();"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
     </Component>
   </SubComponents>
 </Form>

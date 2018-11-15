@@ -19,6 +19,7 @@ nse header, choose License Headers in Project Properties.
  */
 package qltv;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
@@ -56,25 +57,15 @@ public class QLTV extends javax.swing.JFrame {
         Icon employeeIcon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-name-tag-16.png");
         tabs = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentsMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phạm Ngọc Minh - 20162751");
-        setBackground(new java.awt.Color(0, 0, 255));
+        setBackground(new java.awt.Color(51, 102, 255));
         setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         detail = new Detail();
         book = new Book();
@@ -83,7 +74,7 @@ public class QLTV extends javax.swing.JFrame {
         Font f = new Font("Arial", Font.PLAIN, 14);
 
         tabs.setFont(f);
-        tabs.setBackground(new java.awt.Color(102, 102, 255));
+        tabs.setBackground(new java.awt.Color(51, 102, 255));
         tabs.setForeground(new java.awt.Color(0, 0, 0));
         tabs.setName("abc"); // NOI18N
         tabs.setOpaque(true);
@@ -93,142 +84,48 @@ public class QLTV extends javax.swing.JFrame {
             }
         });
 
-        tabs.add("Thông tin sách", book);
-        tabs.add("Người mượn", customer);
-        tabs.add("Nhân viên", employee);
-        tabs.add("Mượn trả", detail);
-        tabs.setBackgroundAt(1, Color
-
-            .MAGENTA);
+        tabs.addTab("Thông tin sách", book);
+        tabs.addTab("Người mượn", customer);
+        tabs.addTab("Nhân viên", employee);
+        tabs.addTab("Mượn trả", detail);
+        tabs.setForeground(Color.BLACK);
+        tabs.setBackgroundAt(0, Color.ORANGE);
         tabs.setIconAt(0, bookIcon);
         tabs.setIconAt(1, customerIcon);
         tabs.setIconAt(2, employeeIcon);
         //tabs.setIconAt(0, bookIcon);
 
+        getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 125, 1260, 570));
+
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1255, 0, -1, 695));
 
-        menuBar.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel2.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        fileMenu.setMnemonic('f');
-        fileMenu.setText("File");
-        fileMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fileMenuActionPerformed(evt);
-            }
-        });
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("Quản Lý Thư Viện Đại học Bách Khoa Hà Nội");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(474, 6, 486, 73));
 
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(openMenuItem);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Book_Shelf_100px.png"))); // NOI18N
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(368, 6, -1, -1));
 
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(saveMenuItem);
+        jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(474, 85, 421, 10));
 
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
-
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(exitMenuItem);
-
-        menuBar.add(fileMenu);
-
-        editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
-
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
-
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
-
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
-
-        menuBar.add(editMenu);
-
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
-
-        contentsMenuItem.setMnemonic('c');
-        contentsMenuItem.setText("Contents");
-        helpMenu.add(contentsMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
-
-        setJMenuBar(menuBar);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(tabs, javax.swing.GroupLayout.DEFAULT_SIZE, 1205, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tabs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 591, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1260, 210));
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
-
     private void tabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabsStateChanged
         // TODO add your handling code here:
         tab = tabs.getSelectedIndex();
-        System.out.println(tab);
     }//GEN-LAST:event_tabsStateChanged
-
-    private void fileMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileMenuActionPerformed
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_fileMenuActionPerformed
-
-    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_openMenuItemActionPerformed
-
-    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_saveMenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,21 +159,11 @@ public class QLTV extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentsMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JMenuBar menuBar;
-    public javax.swing.JMenuItem openMenuItem;
-    private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 
