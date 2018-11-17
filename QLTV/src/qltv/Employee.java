@@ -172,6 +172,7 @@ public class Employee extends javax.swing.JPanel {
 
         chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Excel_25px_3.png"))); // NOI18N
         chooseFile.setToolTipText("Chọn file");
+        chooseFile.setOpaque(false);
         chooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseFileActionPerformed(evt);
@@ -182,6 +183,7 @@ public class Employee extends javax.swing.JPanel {
         save.setForeground(new java.awt.Color(51, 51, 51));
         save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Word_25px.png"))); // NOI18N
         save.setToolTipText("Xuất file");
+        save.setOpaque(false);
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
@@ -194,6 +196,7 @@ public class Employee extends javax.swing.JPanel {
 
         insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Add_Database_25px.png"))); // NOI18N
         insertData.setToolTipText("Thêm vào database");
+        insertData.setOpaque(false);
         insertData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertDataActionPerformed(evt);
@@ -203,6 +206,7 @@ public class Employee extends javax.swing.JPanel {
 
         showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Database_View_25px.png"))); // NOI18N
         showData.setToolTipText("Hiển thị database");
+        showData.setOpaque(false);
         showData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showDataActionPerformed(evt);
@@ -212,6 +216,7 @@ public class Employee extends javax.swing.JPanel {
 
         clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Delete_Document_25px.png"))); // NOI18N
         clearAll.setToolTipText("Xoá bảng");
+        clearAll.setOpaque(false);
         clearAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearAllActionPerformed(evt);
@@ -270,7 +275,7 @@ public class Employee extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(searchTF, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

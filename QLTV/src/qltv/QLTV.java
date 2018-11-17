@@ -22,6 +22,12 @@ package qltv;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import static java.lang.Thread.sleep;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.*;
 
 /**
@@ -41,6 +47,10 @@ public class QLTV extends javax.swing.JFrame {
      */
     public QLTV() {
         initComponents();
+        clock();
+        FrameDragListener frameDragListener = new FrameDragListener(this);
+        this.addMouseListener(frameDragListener);
+        this.addMouseMotionListener(frameDragListener);
     }
 
     /**
@@ -61,10 +71,19 @@ public class QLTV extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        clock = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Phạm Ngọc Minh - 20162751");
         setBackground(new java.awt.Color(51, 102, 255));
         setFont(new java.awt.Font("Agency FB", 1, 14)); // NOI18N
+        setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         detail = new Detail();
@@ -74,7 +93,7 @@ public class QLTV extends javax.swing.JFrame {
         Font f = new Font("Arial", Font.PLAIN, 14);
 
         tabs.setFont(f);
-        tabs.setBackground(new java.awt.Color(51, 102, 255));
+        tabs.setBackground(new java.awt.Color(229, 51, 60));
         tabs.setForeground(new java.awt.Color(0, 0, 0));
         tabs.setName("abc"); // NOI18N
         tabs.setOpaque(true);
@@ -95,28 +114,60 @@ public class QLTV extends javax.swing.JFrame {
         tabs.setIconAt(2, employeeIcon);
         //tabs.setIconAt(0, bookIcon);
 
-        getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 125, 1260, 570));
+        getContentPane().add(tabs, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 165, 1260, 530));
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1255, 0, -1, 695));
 
-        jPanel2.setBackground(new java.awt.Color(51, 102, 255));
+        jPanel2.setBackground(new java.awt.Color(229, 51, 60));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("Quản Lý Thư Viện Đại học Bách Khoa Hà Nội");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(474, 6, 486, 73));
+        jLabel1.setText("<html>\n<h1>Đại học Bách Khoa Hà Nội</h1>\n<h2>     Quản lý thư viện     </h2>\n</html>");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 330, 110));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Book_Shelf_100px.png"))); // NOI18N
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(368, 6, -1, -1));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/bk_logo.png"))); // NOI18N
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 110, 120));
 
         jSeparator1.setForeground(new java.awt.Color(255, 255, 255));
-        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(474, 85, 421, 10));
+        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 320, 10));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1260, 210));
+        jLabel3.setBackground(new java.awt.Color(204, 0, 0));
+        jLabel3.setOpaque(true);
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 60, 170));
+
+        jLabel4.setBackground(new java.awt.Color(204, 52, 49));
+        jLabel4.setOpaque(true);
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 50));
+
+        jLabel6.setBackground(new java.awt.Color(255, 102, 102));
+        jLabel6.setOpaque(true);
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 90, 40));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 0, 100, -1));
+
+        clock.setForeground(new java.awt.Color(255, 255, 255));
+        clock.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(clock, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 0, 110, 20));
+
+        jLabel8.setBackground(new java.awt.Color(204, 0, 51));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Multiply_25px.png"))); // NOI18N
+        jLabel8.setOpaque(true);
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 0, 30, -1));
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Phạm Ngọc Minh - 20162751");
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 0, 200, 20));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1260, 170));
 
         pack();
         setLocationRelativeTo(null);
@@ -126,6 +177,11 @@ public class QLTV extends javax.swing.JFrame {
         // TODO add your handling code here:
         tab = tabs.getSelectedIndex();
     }//GEN-LAST:event_tabsStateChanged
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jLabel8MouseClicked
 
     /**
      * @param args the command line arguments
@@ -159,12 +215,74 @@ public class QLTV extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel clock;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane tabs;
     // End of variables declaration//GEN-END:variables
 
+    private void clock() {
+        Thread thread = new Thread() {
+          public void run() {
+                while (true) {
+                    try {
+                        Calendar cl = new GregorianCalendar();
+                        int day = cl.get(Calendar.DAY_OF_MONTH);
+                        int month = cl.get(Calendar.MONTH);
+                        int year = cl.get(Calendar.YEAR);
+
+                        int second = cl.get(Calendar.SECOND);
+                        int min = cl.get(Calendar.MINUTE);
+                        int hour = cl.get(Calendar.HOUR);
+                        int am_pm = cl.get(Calendar.AM_PM);
+                        String dn = "";
+
+                        if (am_pm == 1) {
+                            dn = "PM";
+                        } else {
+                            dn = "AM";
+                        }
+                        
+                        clock.setText(hour + ":" + min + ":" + second + " " + dn);
+                        sleep(1000);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+
+        };
+        thread.start();
+    }
+    
+    public static class FrameDragListener extends MouseAdapter {
+
+        private final JFrame frame;
+        private Point mouseDownCompCoords = null;
+
+        public FrameDragListener(JFrame frame) {
+            this.frame = frame;
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            mouseDownCompCoords = null;
+        }
+
+        public void mousePressed(MouseEvent e) {
+            mouseDownCompCoords = e.getPoint();
+        }
+
+        public void mouseDragged(MouseEvent e) {
+            Point currCoords = e.getLocationOnScreen();
+            frame.setLocation(currCoords.x - mouseDownCompCoords.x, currCoords.y - mouseDownCompCoords.y);
+        }
+    }
 }

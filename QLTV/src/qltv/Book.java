@@ -125,27 +125,28 @@ public class Book extends javax.swing.JPanel {
         });
 
         bookTable.setAutoCreateRowSorter(true);
-        bookTable.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         bookTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         bookTable.setForeground(new java.awt.Color(0, 0, 0));
         bookTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Thể loại", "Giá", "Số lượng"
+
             }
         ));
         Font f = new Font("Arial", Font.BOLD, 12);
@@ -308,8 +309,7 @@ public class Book extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {

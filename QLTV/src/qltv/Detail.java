@@ -28,6 +28,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -73,7 +75,7 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
  */
 public class Detail extends javax.swing.JPanel {
 
-    private int clicked = 0;
+    public boolean[] inserted = new boolean[100000];
 
     /**
      * Creates new form Detail
@@ -108,17 +110,49 @@ public class Detail extends javax.swing.JPanel {
         showData = new javax.swing.JButton();
         clearAll = new javax.swing.JButton();
 
+        setOpaque(false);
+
+        loanPaymentTable.setAutoCreateRowSorter(true);
+        loanPaymentTable.setBackground(new java.awt.Color(255, 255, 255));
         loanPaymentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Mã mượn", "Mã khách mượn", "Mã nhân viên ", "Ngày mượn", "Đặt cọc", "Ngày hết hạn", "Ghi chú"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        loanPaymentTable.setCellSelectionEnabled(true);
+        loanPaymentTable.setOpaque(false);
+        loanPaymentTable.setRowHeight(26);
+        loanPaymentTable.setShowGrid(true);
         loanPaymentTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 loanPaymentTableMouseClicked(evt);
@@ -132,35 +166,69 @@ public class Detail extends javax.swing.JPanel {
                 loanPaymentTableKeyPressed(evt);
             }
         });
+        Font f = new Font("Arial", Font.BOLD, 12);
+
+        JTableHeader header = loanPaymentTable.getTableHeader();
+
+        header.setFont(f);
         jScrollPane1.setViewportView(loanPaymentTable);
 
+        detailTable.setAutoCreateRowSorter(true);
+        detailTable.setBackground(new java.awt.Color(255, 255, 255));
         detailTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Mã chi tiết đơn", "Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"
             }
         ));
+        detailTable.setCellSelectionEnabled(true);
+        detailTable.setRowHeight(26);
         detailTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 detailTableMouseClicked(evt);
             }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                detailTableMouseReleased(evt);
+            }
         });
+        Font f1 = new Font("Arial", Font.BOLD, 12);
+
+        JTableHeader header1 = detailTable.getTableHeader();
+
+        header1.setFont(f1);
         jScrollPane2.setViewportView(detailTable);
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Hoá đơn mượn trả");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Chi tiết hoá đơn");
 
         checkDetailTable.setEnabled(false);
+        checkDetailTable.setOpaque(false);
         checkDetailTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 checkDetailTableActionPerformed(evt);
@@ -168,12 +236,15 @@ public class Detail extends javax.swing.JPanel {
         });
 
         checkLoanTabel.setEnabled(false);
+        checkLoanTabel.setOpaque(false);
 
         jToolBar1.setRollover(true);
+        jToolBar1.setOpaque(false);
 
         chooseFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Excel_25px_3.png"))); // NOI18N
         chooseFile.setToolTipText("Chọn file");
         chooseFile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        chooseFile.setOpaque(false);
         chooseFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chooseFileActionPerformed(evt);
@@ -185,6 +256,7 @@ public class Detail extends javax.swing.JPanel {
         save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Microsoft_Word_25px.png"))); // NOI18N
         save.setToolTipText("Xuất file");
         save.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        save.setOpaque(false);
         save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveActionPerformed(evt);
@@ -193,9 +265,11 @@ public class Detail extends javax.swing.JPanel {
         jToolBar1.add(save);
 
         jToolBar2.setRollover(true);
+        jToolBar2.setOpaque(false);
 
         insertData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Add_Database_25px.png"))); // NOI18N
         insertData.setToolTipText("Thêm vào database");
+        insertData.setOpaque(false);
         insertData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertDataActionPerformed(evt);
@@ -206,6 +280,7 @@ public class Detail extends javax.swing.JPanel {
         showData.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Database_View_25px.png"))); // NOI18N
         showData.setToolTipText("Hiển thị database");
         showData.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        showData.setOpaque(false);
         showData.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showDataActionPerformed(evt);
@@ -215,6 +290,7 @@ public class Detail extends javax.swing.JPanel {
 
         clearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Delete_Document_25px.png"))); // NOI18N
         clearAll.setToolTipText("Xoá bảng");
+        clearAll.setOpaque(false);
         clearAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearAllActionPerformed(evt);
@@ -237,9 +313,9 @@ public class Detail extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(checkLoanTabel))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
+                        .addGap(27, 27, 27)
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(28, 28, 28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(checkDetailTable))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,11 +334,11 @@ public class Detail extends javax.swing.JPanel {
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkLoanTabel)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
                 .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(checkDetailTable))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -277,6 +353,29 @@ public class Detail extends javax.swing.JPanel {
         checkLoanTabel.setSelected(false);
     }//GEN-LAST:event_detailTableMouseClicked
 
+    private void setDefaultInsertedRows() {
+        for (int i = 0; i < inserted.length; i++) {
+            inserted[i] = false;
+        }
+    }
+
+    public void deleteAllRows() {
+        if (checkLoanTabel.isSelected()) {
+            loanPaymentTable.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object[][]{null, null, null, null, null, null, null},
+                    new String[]{"Mã mượn", "Mã khách mượn", "Mã nhân viên ", "Ngày mượn", "Đặt cọc", "Ngày hết hạn", "Ghi chú"}
+            ));
+//            originalTableModel = (Vector) ((DefaultTableModel) loanPaymentTable.getModel()).getDataVector().clone();
+//            addDocumentListener();
+        } else if (checkDetailTable.isSelected()) {
+            detailTable.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object[][]{null, null, null, null, null, null, null},
+                    new String[]{"Mã chi tiết đơn", "Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"}
+            ));
+//            originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
+        }
+//        searchTF.getDocument().addDocumentListener(null);
+    }
     private void checkDetailTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDetailTableActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_checkDetailTableActionPerformed
@@ -286,94 +385,220 @@ public class Detail extends javax.swing.JPanel {
         checkLoanTabel.setSelected(true);
         checkDetailTable.setSelected(false);
         int row = loanPaymentTable.getSelectedRow();
-        System.out.println(row);
-        detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), row, 1);
+        System.out.println((String) loanPaymentTable.getValueAt(row, 0));
+        checkRecordExcisted((String) loanPaymentTable.getValueAt(row, 0), row);
+
+//        detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), row, 1);
 
     }//GEN-LAST:event_loanPaymentTableMouseClicked
 
     private void loanPaymentTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loanPaymentTableKeyPressed
         // TODO add your handling code here:
+        int row = loanPaymentTable.getSelectedRow();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-            detailTable.setValueAt(loanPaymentTable.getValueAt(0, 0), 0, 1);
+            detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), row, 1);
+            Calendar cl = new GregorianCalendar();
+            int day = cl.get(Calendar.DAY_OF_MONTH);
+            int month = cl.get(Calendar.MONTH);
+            int year = cl.get(Calendar.YEAR);
+
+            int second = cl.get(Calendar.SECOND);
+            int min = cl.get(Calendar.MINUTE);
+            int hour = cl.get(Calendar.HOUR);
+            int am_pm = cl.get(Calendar.AM_PM);
+            if(am_pm == 1) {
+                hour += 12;
+            }
+            String time = year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + second;
+            System.out.println(time);
+            ((DefaultTableModel) loanPaymentTable.getModel()).setValueAt(time, row, 3);
         }
     }//GEN-LAST:event_loanPaymentTableKeyPressed
 
     private void chooseFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseFileActionPerformed
         // TODO add your handling code here:
-        String path = null;
-        JFileChooser fileChooser = new JFileChooser();
-        // show ra một bảng chọn file
-        int rVal = fileChooser.showOpenDialog(null);
-        // nếu nhấn nút ok (tuỳ chọn APPROVE_OPTION)
-        if (rVal == JFileChooser.APPROVE_OPTION) {
-            String fileName = fileChooser.getSelectedFile().getName();
-            String dir = fileChooser.getCurrentDirectory().toString();
-            path = dir + "\\" + fileName;
-        } // nếu nhấn nút cancel trong bảng
-        else if (rVal == JFileChooser.CANCEL_OPTION) {
-            return;
-        }
-        // chỗ này sẽ delete hết các dòng trước khi nhập dữ liệu từ file
-        deleteAllRows();
-        // vector lưu tên cột
-        Vector columns = new Vector();
-        try {
-            FileInputStream file = new FileInputStream(new File(path));
-            // tạo một file excel
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-            // tạo một sheet trong excel có số thứ tự là 0
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            // con trỏ duyệt hàng trong excel
-            Iterator<Row> rowIt = sheet.iterator();
-            // nếu vẫn còn dòng trong file
-            while (rowIt.hasNext()) {
-                // tạo một dòng mới
-                Row row = rowIt.next();
-                // con trỏ trỏ vào các ô trong một dòng
-                Iterator<Cell> cellIt = row.cellIterator();
-                // nếu là hàng 0
-                if (row.getRowNum() == 0) {
-                    // add tên các cột vào trong bảng jtable
-                    while (cellIt.hasNext()) {
-                        Cell cell = cellIt.next();
-                        columns.add(cell.getStringCellValue());
-                        ((DefaultTableModel) loanPaymentTable.getModel()).setColumnIdentifiers(columns);
-                    }
-                } else {
-                    //vector chứa dữ liệu trong 1 dòng để add vào bảng jtabel
-                    Vector<String> rowData = new Vector<String>();
-                    // nếu vẫn còn ô tiếp theo
-                    while (cellIt.hasNext()) {
-                        // lấy cell trong bảng excel
-                        Cell cell = cellIt.next();
-                        // nếu cell có kiểu dữ liệu là string
-                        if (cell.getCellType() == CellType.STRING) {
-                            rowData.add(cell.getStringCellValue());
-                        } // nếu cell có kiểu dữ liệu là số
-                        else if (cell.getCellType() == CellType.NUMERIC) {
-                            rowData.add(Double.toString(cell.getNumericCellValue()));
-                        }
-                    }
-                    // add dữ liệu vào trong bảng jtable
-                    ((DefaultTableModel) loanPaymentTable.getModel()).addRow(rowData);
-                }
+        if (checkLoanTabel.isSelected()) {
+            String path = null;
+            JFileChooser fileChooser = new JFileChooser();
+            // show ra một bảng chọn file
+            int rVal = fileChooser.showOpenDialog(null);
+            // nếu nhấn nút ok (tuỳ chọn APPROVE_OPTION)
+            if (rVal == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                String dir = fileChooser.getCurrentDirectory().toString();
+                path = dir + "\\" + fileName;
+            } // nếu nhấn nút cancel trong bảng
+            else if (rVal == JFileChooser.CANCEL_OPTION) {
+                return;
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
+            // chỗ này sẽ delete hết các dòng trước khi nhập dữ liệu từ file
+//        deleteAllRows();
+            // vector lưu tên cột
+            Vector columns = new Vector();
+            try {
+                FileInputStream file = new FileInputStream(new File(path));
+                // tạo một file excel
+                XSSFWorkbook workbook = new XSSFWorkbook(file);
+                // tạo một sheet trong excel có số thứ tự là 0
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                // con trỏ duyệt hàng trong excel
+                Iterator<Row> rowIt = sheet.iterator();
+                // nếu vẫn còn dòng trong file
+                while (rowIt.hasNext()) {
+                    // tạo một dòng mới
+                    Row row = rowIt.next();
+                    // con trỏ trỏ vào các ô trong một dòng
+                    Iterator<Cell> cellIt = row.cellIterator();
+                    // nếu là hàng 0
+                    if (row.getRowNum() == 0) {
+                        // add tên các cột vào trong bảng jtable
+                        while (cellIt.hasNext()) {
+                            Cell cell = cellIt.next();
+                            columns.add(cell.getStringCellValue());
+                            ((DefaultTableModel) loanPaymentTable.getModel()).setColumnIdentifiers(columns);
+                        }
+                    } else {
+                        //vector chứa dữ liệu trong 1 dòng để add vào bảng jtabel
+                        Vector<String> rowData = new Vector<String>();
+                        // nếu vẫn còn ô tiếp theo
+                        while (cellIt.hasNext()) {
+                            // lấy cell trong bảng excel
+                            Cell cell = cellIt.next();
+                            // nếu cell có kiểu dữ liệu là string
+                            if (cell.getCellType() == CellType.STRING) {
+                                rowData.add(cell.getStringCellValue());
+                            } // nếu cell có kiểu dữ liệu là số
+                            else if (cell.getCellType() == CellType.NUMERIC) {
+                                rowData.add(Double.toString(cell.getNumericCellValue()));
+                            }
+                        }
+                        // add dữ liệu vào trong bảng jtable
+                        ((DefaultTableModel) loanPaymentTable.getModel()).addRow(rowData);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            String path = null;
+            JFileChooser fileChooser = new JFileChooser();
+            // show ra một bảng chọn file
+            int rVal = fileChooser.showOpenDialog(null);
+            // nếu nhấn nút ok (tuỳ chọn APPROVE_OPTION)
+            if (rVal == JFileChooser.APPROVE_OPTION) {
+                String fileName = fileChooser.getSelectedFile().getName();
+                String dir = fileChooser.getCurrentDirectory().toString();
+                path = dir + "\\" + fileName;
+            } // nếu nhấn nút cancel trong bảng
+            else if (rVal == JFileChooser.CANCEL_OPTION) {
+                return;
+            }
+            // chỗ này sẽ delete hết các dòng trước khi nhập dữ liệu từ file
+//        deleteAllRows();
+            // vector lưu tên cột
+            Vector columns = new Vector();
+            try {
+                FileInputStream file = new FileInputStream(new File(path));
+                // tạo một file excel
+                XSSFWorkbook workbook = new XSSFWorkbook(file);
+                // tạo một sheet trong excel có số thứ tự là 0
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                // con trỏ duyệt hàng trong excel
+                Iterator<Row> rowIt = sheet.iterator();
+                // nếu vẫn còn dòng trong file
+                while (rowIt.hasNext()) {
+                    // tạo một dòng mới
+                    Row row = rowIt.next();
+                    // con trỏ trỏ vào các ô trong một dòng
+                    Iterator<Cell> cellIt = row.cellIterator();
+                    // nếu là hàng 0
+                    if (row.getRowNum() == 0) {
+                        // add tên các cột vào trong bảng jtable
+                        while (cellIt.hasNext()) {
+                            Cell cell = cellIt.next();
+                            columns.add(cell.getStringCellValue());
+                            ((DefaultTableModel) detailTable.getModel()).setColumnIdentifiers(columns);
+                        }
+                    } else {
+                        //vector chứa dữ liệu trong 1 dòng để add vào bảng jtabel
+                        Vector<String> rowData = new Vector<String>();
+                        // nếu vẫn còn ô tiếp theo
+                        while (cellIt.hasNext()) {
+                            // lấy cell trong bảng excel
+                            Cell cell = cellIt.next();
+                            // nếu cell có kiểu dữ liệu là string
+                            if (cell.getCellType() == CellType.STRING) {
+                                rowData.add(cell.getStringCellValue());
+                            } // nếu cell có kiểu dữ liệu là số
+                            else if (cell.getCellType() == CellType.NUMERIC) {
+                                rowData.add(Double.toString(cell.getNumericCellValue()));
+                            }
+                        }
+                        // add dữ liệu vào trong bảng jtable
+                        ((DefaultTableModel) detailTable.getModel()).addRow(rowData);
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_chooseFileActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        try {
+        if(checkLoanTabel.isSelected()) {
+            try {
+                FileInputStream fis = new FileInputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
+                XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
+                Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
+                while (bodyElementIterator.hasNext()) {
+                    IBodyElement element = (IBodyElement) bodyElementIterator.next();
+                    if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
+                        java.util.List<XWPFTable> tableList = element.getBody().getTables();
+                        for (XWPFTable table : tableList) {
+                            setDefaultTable(table);
+                            for (int i = 1; i < table.getRows().size(); i++) {
+                                for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
+                                    removeParagraphs(table.getRow(i).getCell(j));
+                                    XWPFParagraph paragraph = table.getRow(i).getCell(j).addParagraph();
+                                    paragraph.createRun().setText(loanPaymentTable.getValueAt(i - 1, j).toString());
+                                }
+
+                            }
+                            addRowData(table, table.getRows().size(), loanPaymentTable);
+                        }
+                    }
+                }
+                OutputStream out = new FileOutputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
+                xdoc.write(out);
+                out.close();
+
+            } catch (IOException | InvalidFormatException ex) {
+            }
+            int dialogResult = JOptionPane.showConfirmDialog(null, "File đã tạo thành công!\nBạn có muốn mở file?");
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        File myFile = new File("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+            } else {
+            }
+        }
+        else if(checkDetailTable.isSelected()) {
+            try {
             FileInputStream fis = new FileInputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
             XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
             Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
             while (bodyElementIterator.hasNext()) {
                 IBodyElement element = (IBodyElement) bodyElementIterator.next();
-
                 if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
                     java.util.List<XWPFTable> tableList = element.getBody().getTables();
                     for (XWPFTable table : tableList) {
@@ -386,7 +611,7 @@ public class Detail extends javax.swing.JPanel {
                             }
 
                         }
-                        addRowData(table, table.getRows().size());
+                        addRowData(table, table.getRows().size(), loanPaymentTable);
                     }
                 }
             }
@@ -408,75 +633,157 @@ public class Detail extends javax.swing.JPanel {
             }
         } else {
         }
+        }
     }//GEN-LAST:event_saveActionPerformed
+    
+    private void addRowData(XWPFTable table, int lastRowPosition, JTable dataTable) {
+        for (int i = lastRowPosition - 1; i < dataTable.getRowCount(); i++) {
+            XWPFTableRow newRow = table.createRow();
+            for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
+                newRow.getCell(j).setText(dataTable.getValueAt(i, j).toString());
+            }
 
+        }
+    }
+
+    private static void removeParagraphs(XWPFTableCell tableCell) {
+        int count = tableCell.getParagraphs().size();
+        for (int i = 0; i < count; i++) {
+            tableCell.removeParagraph(i);
+        }
+    }
+    
     private void insertDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertDataActionPerformed
         // TODO add your handling code here:
         ConnectDB connectDB = new ConnectDB();
         Connection connection = connectDB.getConnect();
 
         //        DefaultTableModel tableModel = (DefaultTableModel) loanPaymentTable.getModel();
-        int rows = loanPaymentTable.getRowCount();
-        for (int row = 0; row < rows; row++) {
-            if (!inserted[row] && !isEmptyRow(row)) {
-                String sql = "INSERT INTO qltv. (idBook, Book_name, Author, Publisher, Kind, Cost, Number_books) VALUES (?,?,?,?,?,?,?)";
-                try {
-                    connection.setAutoCommit(false);
-                    PreparedStatement pst = connection.prepareStatement(sql);
-                    String idBook = (String) loanPaymentTable.getValueAt(row, 0);
-                    String Book_name = (String) loanPaymentTable.getValueAt(row, 1);
-                    String Author = (String) loanPaymentTable.getValueAt(row, 2);
-                    String Publisher = (String) loanPaymentTable.getValueAt(row, 3);
-                    String Kind = (String) loanPaymentTable.getValueAt(row, 4);
-                    String Cost = (String) loanPaymentTable.getValueAt(row, 5);
-                    String Number_books = (String) loanPaymentTable.getValueAt(row, 6);
-                    pst.setString(1, idBook);
-                    pst.setString(2, Book_name);
-                    pst.setString(3, Author);
-                    pst.setString(4, Publisher);
-                    pst.setString(5, Kind);
-                    pst.setString(6, Cost);
-                    pst.setString(7, Number_books);
-                    pst.addBatch();
-                    pst.executeUpdate();
-                    connection.commit();
+        if (checkLoanTabel.isSelected()) {
+            int rows = loanPaymentTable.getRowCount();
+            for (int row = 0; row < rows; row++) {
+                if (!inserted[row] && !isEmptyRow(row, loanPaymentTable)) {
+                    String sql = "INSERT INTO qltv.loan_payment VALUES (?,?,?,?,?,?,?)";
+                    try {
+                        connection.setAutoCommit(false);
+                        PreparedStatement pst = connection.prepareStatement(sql);
+                        String idBook = (String) loanPaymentTable.getValueAt(row, 0);
+                        String Book_name = (String) loanPaymentTable.getValueAt(row, 1);
+                        String Author = (String) loanPaymentTable.getValueAt(row, 2);
+                        String Publisher = (String) loanPaymentTable.getValueAt(row, 3);
+                        String Kind = (String) loanPaymentTable.getValueAt(row, 4);
+                        String Cost = (String) loanPaymentTable.getValueAt(row, 5);
+                        String Number_books = (String) loanPaymentTable.getValueAt(row, 6);
+                        pst.setString(1, idBook);
+                        pst.setString(2, Book_name);
+                        pst.setString(3, Author);
+                        pst.setString(4, Publisher);
+                        pst.setString(5, Kind);
+                        pst.setString(6, Cost);
+                        pst.setString(7, Number_books);
+                        pst.addBatch();
+                        pst.executeUpdate();
+                        connection.commit();
 
-                } catch (HeadlessException | SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                    } catch (HeadlessException | SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                    inserted[row] = true;
                 }
-                inserted[row] = true;
             }
+            JOptionPane.showMessageDialog(null, "Successfully");
+        } else if (checkDetailTable.isSelected()) {
+            int rows = detailTable.getRowCount();
+            for (int row = 0; row < rows; row++) {
+                if (!inserted[row] && !isEmptyRow(row, detailTable)) {
+                    String sql = "INSERT INTO qltv.loan_payment_detail VALUES (?,?,?,?,?,?,?)";
+                    try {
+                        connection.setAutoCommit(false);
+                        PreparedStatement pst = connection.prepareStatement(sql);
+                        String idBook = (String) loanPaymentTable.getValueAt(row, 0);
+                        String Book_name = (String) loanPaymentTable.getValueAt(row, 1);
+                        String Author = (String) loanPaymentTable.getValueAt(row, 2);
+                        String Publisher = (String) loanPaymentTable.getValueAt(row, 3);
+                        String Kind = (String) loanPaymentTable.getValueAt(row, 4);
+                        String Cost = (String) loanPaymentTable.getValueAt(row, 5);
+                        String Number_books = (String) loanPaymentTable.getValueAt(row, 6);
+                        pst.setString(1, idBook);
+                        pst.setString(2, Book_name);
+                        pst.setString(3, Author);
+                        pst.setString(4, Publisher);
+                        pst.setString(5, Kind);
+                        pst.setString(6, Cost);
+                        pst.setString(7, Number_books);
+                        pst.addBatch();
+                        pst.executeUpdate();
+                        connection.commit();
+
+                    } catch (HeadlessException | SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                    inserted[row] = true;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Successfully");
         }
-        JOptionPane.showMessageDialog(null, "Successfully");
     }//GEN-LAST:event_insertDataActionPerformed
 
     private void showDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataActionPerformed
         // TODO add your handling code here:
-        String[] defaultColumnNames = {"Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Thể loại", "Giá", "Số lượng"};
-        String[][] data = {};
-        loanPaymentTable.setModel(new DefaultTableModel(data, defaultColumnNames));
         ConnectDB connectDB = new ConnectDB();
         Connection connection = connectDB.getConnect();
-        DefaultTableModel tableModel = (DefaultTableModel) loanPaymentTable.getModel();
-        String sql = "SELECT * FROM qltv.";
-        PreparedStatement pst;
-        int row = 0;
-        try {
-            pst = connection.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                tableModel.addRow(new Object[]{rs.getString(1), rs.getString(2),
-                    rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
-                });
-                inserted[row] = true;
-                row++;
+        if (checkLoanTabel.isSelected()) {
+            String[] defaultColumnNames = {"Mã mượn", "Mã khách mượn", "Mã nhân viên ", "Ngày mượn", "Đặt cọc", "Ngày hết hạn", "Ghi chú"};
+            String[][] data = {};
+            loanPaymentTable.setModel(new DefaultTableModel(data, defaultColumnNames));
+
+            DefaultTableModel tableModel = (DefaultTableModel) loanPaymentTable.getModel();
+            String sql = "SELECT * FROM qltv.loan_payment";
+            PreparedStatement pst;
+            int row = 0;
+            try {
+                pst = connection.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    tableModel.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
+                    });
+                    inserted[row] = true;
+                    row++;
+                }
+                loanPaymentTable.setModel(tableModel);
+            } catch (SQLException ex) {
+                Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
             }
-            loanPaymentTable.setModel(tableModel);
-        } catch (SQLException ex) {
-            Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        for (int i = 0; i < 40; i++) {
-            tableModel.addRow(new Object[]{null});
+            for (int i = 0; i < 40; i++) {
+                tableModel.addRow(new Object[]{null});
+            }
+        } else if (checkDetailTable.isSelected()) {
+            String[] defaultColumnNames = {"Mã chi tiết đơn", "Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"};
+            String[][] data = {};
+            detailTable.setModel(new DefaultTableModel(data, defaultColumnNames));
+
+            DefaultTableModel tableModel = (DefaultTableModel) detailTable.getModel();
+            String sql = "SELECT * FROM qltv.loan_payment_detail";
+            PreparedStatement pst;
+            int row = 0;
+            try {
+                pst = connection.prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                while (rs.next()) {
+                    tableModel.addRow(new Object[]{rs.getString(1), rs.getString(2),
+                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
+                    });
+                    inserted[row] = true;
+                    row++;
+                }
+                detailTable.setModel(tableModel);
+            } catch (SQLException ex) {
+                Logger.getLogger(BookTab.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            for (int i = 0; i < 40; i++) {
+                tableModel.addRow(new Object[]{null});
+            }
         }
 //        originalTableModel = (Vector) ((DefaultTableModel) loanPaymentTable.getModel()).getDataVector().clone();
         //        addDocumentListener();
@@ -484,10 +791,7 @@ public class Detail extends javax.swing.JPanel {
 
     private void clearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllActionPerformed
         // TODO add your handling code here:
-        String[] defaultColumnNames = {"Mã sách", "Tên sách", "Tác giả", "Nhà xuất bản", "Thể loại", "Giá", "Số lượng"};
-        String[][] data = {null, null, null, null, null, null, null, null, null, null, null, null, null};
-        loanPaymentTable.setModel(new DefaultTableModel(data, defaultColumnNames));
-        setDefaultInsertedRows();
+        deleteAllRows();
     }//GEN-LAST:event_clearAllActionPerformed
 
     private void loanPaymentTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loanPaymentTableMouseReleased
@@ -510,14 +814,41 @@ public class Detail extends javax.swing.JPanel {
                     }
                 }
                 if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
-                    JPopupMenu popup = popUpLP();
+                    JPopupMenu popup = popUp(loanPaymentTable);
                     popup.show(e.getComponent(), e.getX(), e.getY());
                 }
             }
         });
     }//GEN-LAST:event_loanPaymentTableMouseReleased
 
-    private JPopupMenu popUpLP() {
+    private void detailTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detailTableMouseReleased
+        // TODO add your handling code here:
+        detailTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int r = detailTable.rowAtPoint(e.getPoint());
+                if (r >= 0 && r < detailTable.getRowCount()) {
+                    detailTable.setRowSelectionAllowed(true);
+                } else {
+                    detailTable.clearSelection();
+                }
+
+                int[] rowindex = detailTable.getSelectedRows();
+                for (int i = 0; i < rowindex.length; i++) {
+                    int j = rowindex[i];
+                    if (j < 0) {
+                        return;
+                    }
+                }
+                if (e.isPopupTrigger() && e.getComponent() instanceof JTable) {
+                    JPopupMenu popup = popUp(detailTable);
+                    popup.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+    }//GEN-LAST:event_detailTableMouseReleased
+
+    private JPopupMenu popUp(JTable table) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenu deleteMenu = new JMenu("Delete");
         JPopupMenu subPopupMenu = new JPopupMenu();
@@ -544,15 +875,20 @@ public class Detail extends javax.swing.JPanel {
         deleteFromDb.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                int[] rows = loanPaymentTable.getSelectedRows();
+                int[] rows = table.getSelectedRows();
                 Arrays.sort(rows);
                 for (int i = 0; i < rows.length; i++) {
                     int row = rows[i];
                     ConnectDB connectDB = new ConnectDB();
                     Connection connection = connectDB.getConnect();
 
-                    DefaultTableModel tableModel = (DefaultTableModel) loanPaymentTable.getModel();
-                    String sql = "DELETE FROM qltv. WHERE (idBook = ?)";
+                    DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                    String sql = "";
+                    if (checkLoanTabel.isSelected()) {
+                        sql = "DELETE FROM qltv.loan_payment WHERE (idloan = ?)";
+                    } else if (checkDetailTable.isSelected()) {
+                        sql = "DELETE FROM qltv.loan_payment_detail WHERE (idDetail = ?)";
+                    }
                     try {
                         connection.setAutoCommit(false);
                         PreparedStatement pst = connection.prepareStatement(sql);
@@ -563,7 +899,7 @@ public class Detail extends javax.swing.JPanel {
                     } catch (HeadlessException | SQLException ex) {
                         JOptionPane.showMessageDialog(null, "Can not delele!\n" + ex.getMessage());
                     }
-                    ((DefaultTableModel) loanPaymentTable.getModel()).removeRow(row);
+                    ((DefaultTableModel) table.getModel()).removeRow(row);
                     for (int j = i + 1; j < rows.length; j++) {
                         rows[j] = rows[j] - 1;
                     }
@@ -575,12 +911,12 @@ public class Detail extends javax.swing.JPanel {
             @Override
             public void mouseReleased(MouseEvent e) {
 
-                int[] rows = loanPaymentTable.getSelectedRows();
+                int[] rows = table.getSelectedRows();
                 Arrays.sort(rows);
 
                 for (int i = 0; i < rows.length; i++) {
                     int row = rows[i];
-                    ((DefaultTableModel) loanPaymentTable.getModel()).removeRow(row);
+                    ((DefaultTableModel) table.getModel()).removeRow(row);
                     for (int j = i + 1; j < rows.length; j++) {
                         rows[j] = rows[j] - 1;
                     }
@@ -594,14 +930,19 @@ public class Detail extends javax.swing.JPanel {
                 ConnectDB connectDB = new ConnectDB();
                 Connection connection = connectDB.getConnect();
 
-                DefaultTableModel tableModel = (DefaultTableModel) loanPaymentTable.getModel();
-                int[] rows = loanPaymentTable.getSelectedRows();
+                DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                int[] rows = table.getSelectedRows();
                 Arrays.sort(rows);
                 for (int i = 0; i < rows.length; i++) {
                     int row = rows[i];
-
+                    System.out.println(row);
+                    String sql = "";
                     String temp = (String) tableModel.getValueAt(row, 0);
-                    String sql = "UPDATE qltv. SET idBook = ?, Book_name = ?, Author = ?, Publisher = ?, Kind = ?, Cost = ?, Number_books = ? WHERE (idBook = ?)";
+                    if (checkLoanTabel.isSelected()) {
+                        sql = "UPDATE qltv.loan_payment SET idloan = ?, idcustomer = ?, idEmployee = ?, Borrow_day = ?, Deposits = ?, Expire_day = ?, note = ? WHERE (idloan = ?)";
+                    } else if (checkDetailTable.isSelected()) {
+                        sql = "UPDATE qltv.loan_payment_detail SET idDetail = ?, idloan = ?, Book_name = ?, idBook = ?, Pay_day = ?, Mulct = ?, quantity = ? WHERE (idDetail = ?)";
+                    }
                     try {
                         connection.setAutoCommit(false);
                         PreparedStatement pst = connection.prepareStatement(sql);
@@ -634,15 +975,15 @@ public class Detail extends javax.swing.JPanel {
         insertAbove.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                ((DefaultTableModel) loanPaymentTable.getModel()).insertRow(loanPaymentTable.getSelectedRow(), new Object[]{null});
-                loanPaymentTable.removeRowSelectionInterval(loanPaymentTable.getSelectedRow(), loanPaymentTable.getSelectedRow());
+                ((DefaultTableModel) table.getModel()).insertRow(table.getSelectedRow(), new Object[]{null});
+                table.removeRowSelectionInterval(table.getSelectedRow(), table.getSelectedRow());
             }
         });
         insertBelow.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                ((DefaultTableModel) loanPaymentTable.getModel()).insertRow(loanPaymentTable.getSelectedRow() + 1, new Object[]{null});
-                loanPaymentTable.removeRowSelectionInterval(loanPaymentTable.getSelectedRow() + 1, loanPaymentTable.getSelectedRow() + 1);
+                ((DefaultTableModel) table.getModel()).insertRow(table.getSelectedRow() + 1, new Object[]{null});
+                table.removeRowSelectionInterval(table.getSelectedRow() + 1, table.getSelectedRow() + 1);
             }
         });
         subPopupMenu.add(deleteFromTb);
@@ -658,6 +999,12 @@ public class Detail extends javax.swing.JPanel {
 
     }
 
+    private void setDefaultTable(XWPFTable table) {
+        for (int i = 1; i < table.getRows().size(); i++) {
+            table.removeRow(1);
+        }
+    }
+
     private boolean isEmptyRow(int row, JTable table) {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         for (int i = 0; i < table.getColumnCount(); i++) {
@@ -667,6 +1014,33 @@ public class Detail extends javax.swing.JPanel {
             }
         }
         return false;
+    }
+
+    private void checkRecordExcisted(String string, int row) {
+        boolean flag = false;
+        ConnectDB con = new ConnectDB();
+        Connection cn = con.getConnect();
+        String sql = "Select * from qltv.loan_payment_detail where (idloan = '" + string + "')";
+        try {
+            cn.setAutoCommit(false);
+            Statement st = cn.createStatement();
+
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                ((DefaultTableModel) detailTable.getModel()).setNumRows(0);
+                ((DefaultTableModel) detailTable.getModel()).addRow(new Object[]{rs.getString(1), rs.getString(2),
+                    rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
+                });
+                flag = true;
+            }
+        } catch (Exception e) {
+
+        }
+        if (flag == false) {
+            ((DefaultTableModel) detailTable.getModel()).setNumRows(0);
+            ((DefaultTableModel) detailTable.getModel()).addRow(new Object[] {null});
+            detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), 0, 1);
+        }
     }
 
 

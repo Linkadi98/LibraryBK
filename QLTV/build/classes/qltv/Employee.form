@@ -51,7 +51,7 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="jLabel3" alignment="1" min="-2" pref="24" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="searchTF" min="-2" max="-2" attributes="0"/>
+                              <Component id="searchTF" min="-2" pref="16" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -126,6 +126,7 @@
               <Image iconType="3" name="/qltv/icons8_Microsoft_Excel_25px_3.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Ch&#x1ecd;n file"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chooseFileActionPerformed"/>
@@ -140,6 +141,7 @@
               <Image iconType="3" name="/qltv/icons8_Microsoft_Word_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Xu&#x1ea5;t file"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveActionPerformed"/>
@@ -161,6 +163,7 @@
               <Image iconType="3" name="/qltv/icons8_Add_Database_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Th&#xea;m v&#xe0;o database"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertDataActionPerformed"/>
@@ -172,6 +175,7 @@
               <Image iconType="3" name="/qltv/icons8_Database_View_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Hi&#x1ec3;n th&#x1ecb; database"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showDataActionPerformed"/>
@@ -183,6 +187,7 @@
               <Image iconType="3" name="/qltv/icons8_Delete_Document_25px.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Xo&#xe1; b&#x1ea3;ng"/>
+            <Property name="opaque" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearAllActionPerformed"/>
