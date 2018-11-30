@@ -41,6 +41,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
+        <Property name="debugGraphicsOptions" type="int" value="-1"/>
         <Property name="name" type="java.lang.String" value="abc" noResource="true"/>
         <Property name="opaque" type="boolean" value="true"/>
       </Properties>
@@ -49,8 +50,8 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Icon bookIcon = new ImageIcon(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-open-book-16.png&quot;);&#xa;Icon customerIcon = new ImageIcon(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-reading-16.png&quot;);&#xa;Icon employeeIcon = new ImageIcon(&quot;C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-name-tag-16.png&quot;);"/>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="detail = new Detail();&#xa;book = new Book();&#xa;customer = new Customer();&#xa;employee = new Employee();&#xa;Font f = new Font(&quot;Arial&quot;, Font.PLAIN, 14);&#xa;&#xa;tabs.setFont(f);"/>
-        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tabs.addTab(&quot;Th&#xf4;ng tin s&#xe1;ch&quot;, book);&#xa;tabs.addTab(&quot;Ng&#x1b0;&#x1edd;i m&#x1b0;&#x1ee3;n&quot;, customer);&#xa;tabs.addTab(&quot;Nh&#xe2;n vi&#xea;n&quot;, employee);&#xa;tabs.addTab(&quot;M&#x1b0;&#x1ee3;n tr&#x1ea3;&quot;, detail);&#xa;tabs.setForeground(Color.BLACK);&#xa;tabs.setBackgroundAt(0, Color.ORANGE);&#xa;tabs.setIconAt(0, bookIcon);&#xa;tabs.setIconAt(1, customerIcon);&#xa;tabs.setIconAt(2, employeeIcon);&#xa;//tabs.setIconAt(0, bookIcon);"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="detail = new Detail();&#xa;book = new Book();&#xa;customer = new Customer();&#xa;employee = new Employee();&#xa;statistical = new Statistical();&#xa;statisticalTable = new statisticalDetailTable();&#xa;Font f = new Font(&quot;Arial&quot;, Font.PLAIN, 14);&#xa;&#xa;tabs.setFont(f);"/>
+        <AuxValue name="JavaCodeGenerator_LayoutCodePost" type="java.lang.String" value="tabs.addTab(&quot;Th&#xf4;ng tin s&#xe1;ch&quot;, book);&#xa;tabs.addTab(&quot;Ng&#x1b0;&#x1edd;i m&#x1b0;&#x1ee3;n&quot;, customer);&#xa;tabs.addTab(&quot;Nh&#xe2;n vi&#xea;n&quot;, employee);&#xa;tabs.addTab(&quot;M&#x1b0;&#x1ee3;n tr&#x1ea3;&quot;, detail);&#xa;tabs.addTab(&quot;Th&#x1ed1;ng k&#xea;&quot;, statistical);&#xa;tabs.addTab(&quot;Th&#x1ed1;ng k&#xea; b&#x1ea3;ng m&#x1b0;&#x1ee3;n tr&#x1ea3;&quot;, statisticalTable);&#xa;tabs.setForeground(Color.BLACK);&#xa;tabs.setBackgroundAt(0, Color.ORANGE);&#xa;tabs.setIconAt(0, bookIcon);&#xa;tabs.setIconAt(1, customerIcon);&#xa;tabs.setIconAt(2, employeeIcon);&#xa;//tabs.setIconAt(0, bookIcon);"/>
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -195,10 +196,13 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="0" red="cc" type="rgb"/>
             </Property>
+            <Property name="displayedMnemonic" type="int" value="-1"/>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/qltv/icons8_Multiply_25px.png"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="&#x110;&#xf3;ng"/>
+            <Property name="doubleBuffered" type="boolean" value="true"/>
             <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>

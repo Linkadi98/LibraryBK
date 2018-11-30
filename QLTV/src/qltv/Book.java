@@ -524,6 +524,7 @@ public class Book extends javax.swing.JPanel {
                     pst.setString(5, Kind);
                     pst.setString(6, Cost);
                     pst.setString(7, Number_books);
+                    
                     pst.addBatch();
                     pst.executeUpdate();
                     connection.commit();

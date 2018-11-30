@@ -19,7 +19,6 @@ nse header, choose License Headers in Project Properties.
  */
 package qltv;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Point;
@@ -41,7 +40,10 @@ public class QLTV extends javax.swing.JFrame {
     public JPanel book ;
     public JPanel customer ;
     public JPanel employee ;
-    public JTable newTable;
+    public JPanel statistical;
+    public JPanel statisticalTable;
+;
+    
     /**
      * Creates new form QLTV
      */
@@ -90,11 +92,14 @@ public class QLTV extends javax.swing.JFrame {
         book = new Book();
         customer = new Customer();
         employee = new Employee();
+        statistical = new Statistical();
+        statisticalTable = new statisticalDetailTable();
         Font f = new Font("Arial", Font.PLAIN, 14);
 
         tabs.setFont(f);
         tabs.setBackground(new java.awt.Color(229, 51, 60));
         tabs.setForeground(new java.awt.Color(0, 0, 0));
+        tabs.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
         tabs.setName("abc"); // NOI18N
         tabs.setOpaque(true);
         tabs.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -107,6 +112,8 @@ public class QLTV extends javax.swing.JFrame {
         tabs.addTab("Người mượn", customer);
         tabs.addTab("Nhân viên", employee);
         tabs.addTab("Mượn trả", detail);
+        tabs.addTab("Thống kê", statistical);
+        tabs.addTab("Thống kê bảng mượn trả", statisticalTable);
         tabs.setForeground(Color.BLACK);
         tabs.setBackgroundAt(0, Color.ORANGE);
         tabs.setIconAt(0, bookIcon);
@@ -153,8 +160,11 @@ public class QLTV extends javax.swing.JFrame {
         jPanel2.add(clock, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 0, 110, 20));
 
         jLabel8.setBackground(new java.awt.Color(204, 0, 51));
+        jLabel8.setDisplayedMnemonic('\uffff');
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/qltv/icons8_Multiply_25px.png"))); // NOI18N
+        jLabel8.setToolTipText("Đóng");
+        jLabel8.setDoubleBuffered(true);
         jLabel8.setOpaque(true);
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -248,9 +258,12 @@ public class QLTV extends javax.swing.JFrame {
 
                         if (am_pm == 1) {
                             dn = "PM";
+                            hour = hour + 12;
                         } else {
                             dn = "AM";
                         }
+                        
+                        
                         
                         clock.setText(hour + ":" + min + ":" + second + " " + dn);
                         sleep(1000);

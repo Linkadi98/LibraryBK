@@ -5,17 +5,15 @@
  */
 package qltv;
 
-import java.awt.event.KeyEvent;
 import java.awt.Desktop;
 import java.awt.Font;
 import javax.swing.*;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,39 +25,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.usermodel.IBodyElement;
@@ -75,12 +69,18 @@ import org.apache.poi.xwpf.usermodel.XWPFTableRow;
  */
 public class Detail extends javax.swing.JPanel {
 
-    public boolean[] inserted = new boolean[100000];
+    public boolean[] insertedLoanPayment = new boolean[100000];
+    public boolean[] insertedDetail = new boolean[100000];
+    private int count = 0;
+    List<String> list;
+    private JComboBox<String> combo = new JComboBox<>();
+    public int index;
 
     /**
      * Creates new form Detail
      */
     public Detail() {
+        this.list = new ArrayList<>();
         initComponents();
     }
 
@@ -152,7 +152,6 @@ public class Detail extends javax.swing.JPanel {
         loanPaymentTable.setCellSelectionEnabled(true);
         loanPaymentTable.setOpaque(false);
         loanPaymentTable.setRowHeight(26);
-        loanPaymentTable.setShowGrid(true);
         loanPaymentTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 loanPaymentTableMouseClicked(evt);
@@ -177,32 +176,35 @@ public class Detail extends javax.swing.JPanel {
         detailTable.setBackground(new java.awt.Color(255, 255, 255));
         detailTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Mã chi tiết đơn", "Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"
+                "Mã mượn", "Mã sách", "Tên sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"
             }
         ));
         detailTable.setCellSelectionEnabled(true);
+        detailTable.setDropMode(javax.swing.DropMode.ON);
+        detailTable.setEditingColumn(4);
+        detailTable.setInheritsPopupMenu(true);
         detailTable.setRowHeight(26);
         detailTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -212,11 +214,17 @@ public class Detail extends javax.swing.JPanel {
                 detailTableMouseReleased(evt);
             }
         });
+        detailTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                detailTableKeyPressed(evt);
+            }
+        });
         Font f1 = new Font("Arial", Font.BOLD, 12);
 
         JTableHeader header1 = detailTable.getTableHeader();
 
         header1.setFont(f1);
+        detailTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox()));
         jScrollPane2.setViewportView(detailTable);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
@@ -345,17 +353,27 @@ public class Detail extends javax.swing.JPanel {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        checkLoanTabel.setSelected(true);
     }// </editor-fold>//GEN-END:initComponents
 
     private void detailTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detailTableMouseClicked
         // TODO add your handling code here:
         checkDetailTable.setSelected(true);
         checkLoanTabel.setSelected(false);
+
+
     }//GEN-LAST:event_detailTableMouseClicked
 
     private void setDefaultInsertedRows() {
-        for (int i = 0; i < inserted.length; i++) {
-            inserted[i] = false;
+        if (checkLoanTabel.isSelected()) {
+            for (int i = 0; i < insertedLoanPayment.length; i++) {
+                insertedLoanPayment[i] = false;
+            }
+        } else if (checkDetailTable.isSelected()) {
+            for (int i = 0; i < insertedDetail.length; i++) {
+                insertedDetail[i] = false;
+            }
         }
     }
 
@@ -365,16 +383,13 @@ public class Detail extends javax.swing.JPanel {
                     new Object[][]{null, null, null, null, null, null, null},
                     new String[]{"Mã mượn", "Mã khách mượn", "Mã nhân viên ", "Ngày mượn", "Đặt cọc", "Ngày hết hạn", "Ghi chú"}
             ));
-//            originalTableModel = (Vector) ((DefaultTableModel) loanPaymentTable.getModel()).getDataVector().clone();
-//            addDocumentListener();
         } else if (checkDetailTable.isSelected()) {
             detailTable.setModel(new javax.swing.table.DefaultTableModel(
                     new Object[][]{null, null, null, null, null, null, null},
                     new String[]{"Mã chi tiết đơn", "Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"}
             ));
-//            originalTableModel = (Vector) ((DefaultTableModel) bookTable.getModel()).getDataVector().clone();
         }
-//        searchTF.getDocument().addDocumentListener(null);
+
     }
     private void checkDetailTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkDetailTableActionPerformed
         // TODO add your handling code here:
@@ -385,18 +400,35 @@ public class Detail extends javax.swing.JPanel {
         checkLoanTabel.setSelected(true);
         checkDetailTable.setSelected(false);
         int row = loanPaymentTable.getSelectedRow();
-        System.out.println((String) loanPaymentTable.getValueAt(row, 0));
+        if (!isEmptyRow(row, loanPaymentTable)) {
+            ((DefaultTableModel) detailTable.getModel()).setNumRows(0);
+        }
         checkRecordExcisted((String) loanPaymentTable.getValueAt(row, 0), row);
-
-//        detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), row, 1);
-
+        
+        for (int i = 0; i < combo.getModel().getSize(); i++) {
+            System.out.println(combo.getModel().getElementAt(i));
+            
+        }
+        System.out.println("------------------");
     }//GEN-LAST:event_loanPaymentTableMouseClicked
 
     private void loanPaymentTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loanPaymentTableKeyPressed
         // TODO add your handling code here:
-        int row = loanPaymentTable.getSelectedRow();
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-            detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), row, 1);
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && loanPaymentTable.getSelectedRow() == loanPaymentTable.getRowCount() - 1) {
+
+            ((DefaultTableModel) loanPaymentTable.getModel()).addRow(new Object[]{null});
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            loanPaymentTable.requestFocus();
+            loanPaymentTable.changeSelection(loanPaymentTable.getSelectedRow(), 0, false, false);
+        }
+        DefaultTableModel tableModel = (DefaultTableModel) detailTable.getModel();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            int row = loanPaymentTable.getSelectedRow();
+            System.out.println(row);
+            tableModel.addRow(new Object[]{null});
+            detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), tableModel.getRowCount() - 1, 1);
             Calendar cl = new GregorianCalendar();
             int day = cl.get(Calendar.DAY_OF_MONTH);
             int month = cl.get(Calendar.MONTH);
@@ -406,11 +438,10 @@ public class Detail extends javax.swing.JPanel {
             int min = cl.get(Calendar.MINUTE);
             int hour = cl.get(Calendar.HOUR);
             int am_pm = cl.get(Calendar.AM_PM);
-            if(am_pm == 1) {
+            if (am_pm == 1) {
                 hour += 12;
             }
             String time = year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + second;
-            System.out.println(time);
             ((DefaultTableModel) loanPaymentTable.getModel()).setValueAt(time, row, 3);
         }
     }//GEN-LAST:event_loanPaymentTableKeyPressed
@@ -550,7 +581,48 @@ public class Detail extends javax.swing.JPanel {
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
         // TODO add your handling code here:
-        if(checkLoanTabel.isSelected()) {
+        if (checkLoanTabel.isSelected()) {
+            try {
+                FileInputStream fis = new FileInputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
+                XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
+                Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
+                while (bodyElementIterator.hasNext()) {
+                    IBodyElement element = (IBodyElement) bodyElementIterator.next();
+                    if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
+                        java.util.List<XWPFTable> tableList = element.getBody().getTables();
+                        for (XWPFTable table : tableList) {
+                            setDefaultTable(table);
+                            for (int i = 1; i < table.getRows().size(); i++) {
+                                for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
+                                    removeParagraphs(table.getRow(i).getCell(j));
+                                    XWPFParagraph paragraph = table.getRow(i).getCell(j).addParagraph();
+                                    paragraph.createRun().setText(loanPaymentTable.getValueAt(i - 1, j).toString());
+                                }
+
+                            }
+                            addRowData(table, table.getRows().size(), loanPaymentTable);
+                        }
+                    }
+                }
+                OutputStream out = new FileOutputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
+                xdoc.write(out);
+                out.close();
+
+            } catch (IOException | InvalidFormatException ex) {
+            }
+            int dialogResult = JOptionPane.showConfirmDialog(null, "File đã tạo thành công!\nBạn có muốn mở file?");
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        File myFile = new File("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        // no application registered for PDFs
+                    }
+                }
+            } else {
+            }
+        } else if (checkDetailTable.isSelected()) {
             try {
                 FileInputStream fis = new FileInputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
                 XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
@@ -592,50 +664,8 @@ public class Detail extends javax.swing.JPanel {
             } else {
             }
         }
-        else if(checkDetailTable.isSelected()) {
-            try {
-            FileInputStream fis = new FileInputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
-            XWPFDocument xdoc = new XWPFDocument(OPCPackage.open(fis));
-            Iterator bodyElementIterator = xdoc.getBodyElementsIterator();
-            while (bodyElementIterator.hasNext()) {
-                IBodyElement element = (IBodyElement) bodyElementIterator.next();
-                if ("TABLE".equalsIgnoreCase(element.getElementType().name())) {
-                    java.util.List<XWPFTable> tableList = element.getBody().getTables();
-                    for (XWPFTable table : tableList) {
-                        setDefaultTable(table);
-                        for (int i = 1; i < table.getRows().size(); i++) {
-                            for (int j = 0; j < table.getRow(i).getTableCells().size(); j++) {
-                                removeParagraphs(table.getRow(i).getCell(j));
-                                XWPFParagraph paragraph = table.getRow(i).getCell(j).addParagraph();
-                                paragraph.createRun().setText(loanPaymentTable.getValueAt(i - 1, j).toString());
-                            }
-
-                        }
-                        addRowData(table, table.getRows().size(), loanPaymentTable);
-                    }
-                }
-            }
-            OutputStream out = new FileOutputStream("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
-            xdoc.write(out);
-            out.close();
-
-        } catch (IOException | InvalidFormatException ex) {
-        }
-        int dialogResult = JOptionPane.showConfirmDialog(null, "File đã tạo thành công!\nBạn có muốn mở file?");
-        if (dialogResult == JOptionPane.YES_OPTION) {
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    File myFile = new File("C:\\Users\\Pham Ngoc Minh\\Desktop\\TestWord.docx");
-                    Desktop.getDesktop().open(myFile);
-                } catch (IOException ex) {
-                    // no application registered for PDFs
-                }
-            }
-        } else {
-        }
-        }
     }//GEN-LAST:event_saveActionPerformed
-    
+
     private void addRowData(XWPFTable table, int lastRowPosition, JTable dataTable) {
         for (int i = lastRowPosition - 1; i < dataTable.getRowCount(); i++) {
             XWPFTableRow newRow = table.createRow();
@@ -652,7 +682,7 @@ public class Detail extends javax.swing.JPanel {
             tableCell.removeParagraph(i);
         }
     }
-    
+
     private void insertDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertDataActionPerformed
         // TODO add your handling code here:
         ConnectDB connectDB = new ConnectDB();
@@ -662,7 +692,7 @@ public class Detail extends javax.swing.JPanel {
         if (checkLoanTabel.isSelected()) {
             int rows = loanPaymentTable.getRowCount();
             for (int row = 0; row < rows; row++) {
-                if (!inserted[row] && !isEmptyRow(row, loanPaymentTable)) {
+                if (!insertedLoanPayment[row] && !isEmptyRow(row, loanPaymentTable)) {
                     String sql = "INSERT INTO qltv.loan_payment VALUES (?,?,?,?,?,?,?)";
                     try {
                         connection.setAutoCommit(false);
@@ -688,43 +718,45 @@ public class Detail extends javax.swing.JPanel {
                     } catch (HeadlessException | SQLException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
-                    inserted[row] = true;
+                    insertedLoanPayment[row] = true;
                 }
             }
             JOptionPane.showMessageDialog(null, "Successfully");
         } else if (checkDetailTable.isSelected()) {
             int rows = detailTable.getRowCount();
             for (int row = 0; row < rows; row++) {
-                if (!inserted[row] && !isEmptyRow(row, detailTable)) {
-                    String sql = "INSERT INTO qltv.loan_payment_detail VALUES (?,?,?,?,?,?,?)";
+                if (!insertedDetail[row] && !isEmptyRow(row, detailTable)) {
+                    String sql = "INSERT INTO qltv.loan_payment_detail VALUES (?,?,?,?,?,?)";
                     try {
                         connection.setAutoCommit(false);
                         PreparedStatement pst = connection.prepareStatement(sql);
-                        String idBook = (String) loanPaymentTable.getValueAt(row, 0);
-                        String Book_name = (String) loanPaymentTable.getValueAt(row, 1);
-                        String Author = (String) loanPaymentTable.getValueAt(row, 2);
-                        String Publisher = (String) loanPaymentTable.getValueAt(row, 3);
-                        String Kind = (String) loanPaymentTable.getValueAt(row, 4);
-                        String Cost = (String) loanPaymentTable.getValueAt(row, 5);
-                        String Number_books = (String) loanPaymentTable.getValueAt(row, 6);
+                        String idBook = (String) detailTable.getValueAt(row, 0);
+                        String Book_name = (String) detailTable.getValueAt(row, 1);
+                        String Author = (String) detailTable.getValueAt(row, 2);
+                        String Publisher = (String) detailTable.getValueAt(row, 3);
+                        String Kind = (String) detailTable.getValueAt(row, 4);
+                        String Cost = (String) detailTable.getValueAt(row, 5);
+
                         pst.setString(1, idBook);
                         pst.setString(2, Book_name);
                         pst.setString(3, Author);
                         pst.setString(4, Publisher);
                         pst.setString(5, Kind);
                         pst.setString(6, Cost);
-                        pst.setString(7, Number_books);
+
                         pst.addBatch();
                         pst.executeUpdate();
                         connection.commit();
-
+                        JOptionPane.showMessageDialog(null, "Successfully");
                     } catch (HeadlessException | SQLException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
-                    inserted[row] = true;
+                    insertedDetail[row] = true;
                 }
             }
-            JOptionPane.showMessageDialog(null, "Successfully");
+            
+            detailTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox()));
+            detailTable.revalidate();
         }
     }//GEN-LAST:event_insertDataActionPerformed
 
@@ -748,7 +780,7 @@ public class Detail extends javax.swing.JPanel {
                     tableModel.addRow(new Object[]{rs.getString(1), rs.getString(2),
                         rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
                     });
-                    inserted[row] = true;
+                    insertedLoanPayment[row] = true;
                     row++;
                 }
                 loanPaymentTable.setModel(tableModel);
@@ -759,7 +791,8 @@ public class Detail extends javax.swing.JPanel {
                 tableModel.addRow(new Object[]{null});
             }
         } else if (checkDetailTable.isSelected()) {
-            String[] defaultColumnNames = {"Mã chi tiết đơn", "Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"};
+            count = 0;
+            String[] defaultColumnNames = {"Mã mượn", "Tên sách", "Mã sách", "Ngày trả", "Tiền phạt", "Số lượng sách mượn"};
             String[][] data = {};
             detailTable.setModel(new DefaultTableModel(data, defaultColumnNames));
 
@@ -772,9 +805,9 @@ public class Detail extends javax.swing.JPanel {
                 ResultSet rs = pst.executeQuery();
                 while (rs.next()) {
                     tableModel.addRow(new Object[]{rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
+                        rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
                     });
-                    inserted[row] = true;
+                    insertedDetail[row] = true;
                     row++;
                 }
                 detailTable.setModel(tableModel);
@@ -784,14 +817,15 @@ public class Detail extends javax.swing.JPanel {
             for (int i = 0; i < 40; i++) {
                 tableModel.addRow(new Object[]{null});
             }
+            detailTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox()));
         }
-//        originalTableModel = (Vector) ((DefaultTableModel) loanPaymentTable.getModel()).getDataVector().clone();
-        //        addDocumentListener();
+
     }//GEN-LAST:event_showDataActionPerformed
 
     private void clearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearAllActionPerformed
         // TODO add your handling code here:
         deleteAllRows();
+        detailTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox()));
     }//GEN-LAST:event_clearAllActionPerformed
 
     private void loanPaymentTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loanPaymentTableMouseReleased
@@ -848,6 +882,44 @@ public class Detail extends javax.swing.JPanel {
         });
     }//GEN-LAST:event_detailTableMouseReleased
 
+    private void detailTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_detailTableKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && detailTable.getSelectedRow() == detailTable.getRowCount() - 1) {
+
+            ((DefaultTableModel) detailTable.getModel()).addRow(new Object[]{null});
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            detailTable.requestFocus();
+            detailTable.changeSelection(detailTable.getSelectedRow(), 0, false, false);
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                // chọn ô ngày hết hạn tương ứng với mã mượn trả
+                Date dateLoan = date.parse(chooseDate((String) detailTable.getValueAt(detailTable.getSelectedRow(), 0)));
+                // chọn ô ngày trả tương ứng với dòng đang được chọn
+                Date datePay = date.parse((String) detailTable.getValueAt(detailTable.getSelectedRow(), 3));
+                // nếu ngày trả chưa quá hạn
+                if (betweenDates(dateLoan, datePay) <= 0) {
+                    detailTable.setValueAt("0", detailTable.getSelectedRow(), 4);
+
+                } // nếu ngày trả quá hạn
+                else if (betweenDates(dateLoan, datePay) > 0) {
+                    detailTable.setValueAt(String.valueOf(betweenDates(dateLoan, datePay) * 1000), detailTable.getSelectedRow(), 4);
+                }
+            } catch (ParseException | IOException ex) {
+                Logger.getLogger(Detail.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+            if (detailTable.getSelectedColumn() == 1) {
+                detailTable.changeSelection(detailTable.getSelectedRow(), 2, false, false);
+                detailTable.setValueAt(list.get(getIndex((String) detailTable.getValueAt(detailTable.getSelectedRow(), 1))), detailTable.getSelectedRow(), 2);
+            }
+        }
+    }//GEN-LAST:event_detailTableKeyPressed
+
     private JPopupMenu popUp(JTable table) {
         JPopupMenu popupMenu = new JPopupMenu();
         JMenu deleteMenu = new JMenu("Delete");
@@ -857,6 +929,7 @@ public class Detail extends javax.swing.JPanel {
         JMenu insertMenu = new JMenu("Insert");
         JMenuItem insertAbove = new JMenuItem("Insert Above");
         JMenuItem insertBelow = new JMenuItem("Insert Below");
+        JMenuItem inserNewRecord = new JMenuItem("Insert New Record");
         JMenuItem update = new JMenuItem("Update");
         Icon icon = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-cancel-16.png");
         Icon deleteDb = new ImageIcon("C:\\Users\\Pham Ngoc Minh\\Downloads\\Icon\\icons8-delete-database-20.png");
@@ -872,6 +945,17 @@ public class Detail extends javax.swing.JPanel {
         deleteFromDb.setIcon(deleteDb);
         deleteFromTb.setIcon(deleteTb);
         update.setIcon(updateIcon);
+        inserNewRecord.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                int r = table.rowAtPoint(e.getPoint());
+                System.out.println(r);
+                DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                tableModel.addRow(new Object[]{tableModel.getValueAt(r, 0), "", "", "", "", ""});
+                insertedDetail[table.getRowCount() - 1] = false;
+            }
+
+        });
         deleteFromDb.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -937,30 +1021,24 @@ public class Detail extends javax.swing.JPanel {
                     int row = rows[i];
                     System.out.println(row);
                     String sql = "";
-                    String temp = (String) tableModel.getValueAt(row, 0);
+                    String idloan = (String) tableModel.getValueAt(row, 0);
+                    String idBook = (String) tableModel.getValueAt(row, 1);
                     if (checkLoanTabel.isSelected()) {
                         sql = "UPDATE qltv.loan_payment SET idloan = ?, idcustomer = ?, idEmployee = ?, Borrow_day = ?, Deposits = ?, Expire_day = ?, note = ? WHERE (idloan = ?)";
                     } else if (checkDetailTable.isSelected()) {
-                        sql = "UPDATE qltv.loan_payment_detail SET idDetail = ?, idloan = ?, Book_name = ?, idBook = ?, Pay_day = ?, Mulct = ?, quantity = ? WHERE (idDetail = ?)";
+                        sql = "UPDATE qltv.loan_payment_detail SET idloan = ?, idBook = ?, Book_name = ?, Pay_day = ?, Mulct = ?, quantity = ? WHERE (idloan = ?) and (idBook = ?)";
                     }
                     try {
                         connection.setAutoCommit(false);
                         PreparedStatement pst = connection.prepareStatement(sql);
-                        String idBook = (String) tableModel.getValueAt(row, 0);
-                        String Book_name = (String) tableModel.getValueAt(row, 1);
-                        String Author = (String) tableModel.getValueAt(row, 2);
-                        String Publisher = (String) tableModel.getValueAt(row, 3);
-                        String Kind = (String) tableModel.getValueAt(row, 4);
-                        String Cost = (String) tableModel.getValueAt(row, 5);
-                        String Number_books = (String) tableModel.getValueAt(row, 6);
-                        pst.setString(8, temp);
-                        pst.setString(1, idBook);
-                        pst.setString(2, Book_name);
-                        pst.setString(3, Author);
-                        pst.setString(4, Publisher);
-                        pst.setString(5, Kind);
-                        pst.setString(6, Cost);
-                        pst.setString(7, Number_books);
+                        pst.setString(7, idloan);
+                        pst.setString(8, idBook);
+                        pst.setString(1, (String) detailTable.getValueAt(row, 0));
+                        pst.setString(2, (String) detailTable.getValueAt(row, 1));
+                        pst.setString(3, (String) detailTable.getValueAt(row, 2));
+                        pst.setString(4, (String) detailTable.getValueAt(row, 3));
+                        pst.setString(5, (String) detailTable.getValueAt(row, 4));
+                        pst.setString(6, (String) detailTable.getValueAt(row, 5));
                         pst.addBatch();
                         pst.executeUpdate();
 
@@ -988,6 +1066,9 @@ public class Detail extends javax.swing.JPanel {
         });
         subPopupMenu.add(deleteFromTb);
         subPopupMenu.add(deleteFromDb);
+        if (table == detailTable) {
+            insertMenu.add(inserNewRecord);
+        }
         insertMenu.add(insertBelow);
         insertMenu.add(insertAbove);
         deleteMenu.add(deleteFromTb);
@@ -1017,6 +1098,8 @@ public class Detail extends javax.swing.JPanel {
     }
 
     private void checkRecordExcisted(String string, int row) {
+
+        DefaultTableModel table = (DefaultTableModel) detailTable.getModel();
         boolean flag = false;
         ConnectDB con = new ConnectDB();
         Connection cn = con.getConnect();
@@ -1027,22 +1110,68 @@ public class Detail extends javax.swing.JPanel {
 
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-                ((DefaultTableModel) detailTable.getModel()).setNumRows(0);
                 ((DefaultTableModel) detailTable.getModel()).addRow(new Object[]{rs.getString(1), rs.getString(2),
-                    rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
+                    rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)
                 });
                 flag = true;
+
             }
         } catch (Exception e) {
 
         }
-        if (flag == false) {
-            ((DefaultTableModel) detailTable.getModel()).setNumRows(0);
-            ((DefaultTableModel) detailTable.getModel()).addRow(new Object[] {null});
-            detailTable.setValueAt(loanPaymentTable.getValueAt(row, 0), 0, 1);
+        for (int i = 0; i < table.getRowCount(); i++) {
+            insertedDetail[i] = true;
+        }
+        if (flag == false && !isEmptyRow(loanPaymentTable.getSelectedRow(), loanPaymentTable)) {
+            ((DefaultTableModel) detailTable.getModel()).addRow(new Object[]{"", loanPaymentTable.getValueAt(row, 0), "", "", "", "", ""});
+            insertedDetail[table.getRowCount() - 1] = false;
         }
     }
 
+    public long betweenDates(Date firstDate, Date secondDate) throws IOException {
+        return ChronoUnit.DAYS.between(firstDate.toInstant(), secondDate.toInstant());
+    }
+
+    // cái hàm này để lấy cái ngày hết hạn ứng với cái mã mượn trả
+    private String chooseDate(String idLoan) {
+
+        for (int i = 0; i < loanPaymentTable.getRowCount(); i++) {
+            String temp = loanPaymentTable.getValueAt(i, 0).toString();
+            if ((idLoan == null ? temp == null : idLoan.equals(temp)) && !isEmptyRow(i, loanPaymentTable)) {
+                return loanPaymentTable.getValueAt(i, 5).toString();
+            }
+        }
+        return null;
+    }
+
+    private JComboBox<String> comboBox() {
+        combo.removeAllItems();
+        list.clear();
+        ConnectDB connectDB = new ConnectDB();
+        Connection con = connectDB.getConnect();
+        String sql = "select idBook, Book_name from qltv.infor_book";
+        try {
+            PreparedStatement pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                combo.addItem(rs.getString(1));
+                list.add(rs.getString(2));
+            }
+        } catch (Exception e) {
+        }
+        return combo;
+    }
+
+    private int getIndex(String element) {
+        for (int i = 0; i < combo.getModel().getSize(); i++) {
+            String temp = (String) combo.getModel().getElementAt(i);
+            if (element == null ? temp == null : element.equals(temp)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

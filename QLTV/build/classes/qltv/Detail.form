@@ -106,7 +106,6 @@
             <Property name="cellSelectionEnabled" type="boolean" value="true"/>
             <Property name="opaque" type="boolean" value="false"/>
             <Property name="rowHeight" type="int" value="26"/>
-            <Property name="showGrid" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="loanPaymentTableMouseClicked"/>
@@ -133,25 +132,32 @@
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="7" rowCount="20">
-                <Column editable="true" title="M&#xe3; chi ti&#x1ebf;t &#x111;&#x1a1;n" type="java.lang.Object"/>
+              <Table columnCount="6" rowCount="20">
                 <Column editable="true" title="M&#xe3; m&#x1b0;&#x1ee3;n" type="java.lang.Object"/>
-                <Column editable="true" title="T&#xea;n s&#xe1;ch" type="java.lang.Object"/>
                 <Column editable="true" title="M&#xe3; s&#xe1;ch" type="java.lang.Object"/>
+                <Column editable="true" title="T&#xea;n s&#xe1;ch" type="java.lang.Object"/>
                 <Column editable="true" title="Ng&#xe0;y tr&#x1ea3;" type="java.lang.Object"/>
                 <Column editable="true" title="Ti&#x1ec1;n ph&#x1ea1;t" type="java.lang.Object"/>
                 <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng s&#xe1;ch m&#x1b0;&#x1ee3;n" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="cellSelectionEnabled" type="boolean" value="true"/>
+            <Property name="dropMode" type="javax.swing.DropMode" editor="org.netbeans.modules.form.editors.EnumEditor">
+              <Value id="ON"/>
+            </Property>
+            <Property name="editingColumn" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="4" type="code"/>
+            </Property>
+            <Property name="inheritsPopupMenu" type="boolean" value="true"/>
             <Property name="rowHeight" type="int" value="26"/>
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="detailTableMouseClicked"/>
             <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="detailTableMouseReleased"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="detailTableKeyPressed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="Font f1 = new Font(&quot;Arial&quot;, Font.BOLD, 12);&#xa;&#xa;JTableHeader header1 = detailTable.getTableHeader();&#xa;&#xa;header1.setFont(f1);"/>
+            <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="Font f1 = new Font(&quot;Arial&quot;, Font.BOLD, 12);&#xa;&#xa;JTableHeader header1 = detailTable.getTableHeader();&#xa;&#xa;header1.setFont(f1);&#xa;detailTable.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox()));"/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -185,9 +191,14 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="checkLoanTabel">
       <Properties>
-        <Property name="enabled" type="boolean" value="false"/>
+        <Property name="enabled" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="false" type="code"/>
+        </Property>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="checkLoanTabel.setSelected(true);"/>
+      </AuxValues>
     </Component>
     <Container class="javax.swing.JToolBar" name="jToolBar1">
       <Properties>
